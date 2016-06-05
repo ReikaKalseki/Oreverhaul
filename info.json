@@ -1,0 +1,9 @@
+{
+  "name": "Oreverhaul",
+  "version": "0.0.1",
+  "title": "Oreverhaul",
+  "author": "Reika",
+  "homepage": "",
+  "dependencies": ["base"],
+  "description": "Overhauls ore gen to increase density at larger distances, but forces some resources to only generate further out."
+}
