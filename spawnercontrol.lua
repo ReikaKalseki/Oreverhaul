@@ -156,6 +156,7 @@ function tryCreateSpawner(spawnertype, surface, chunk, x, y)
 		dx = x+getRandPM(r)
 		dy = y+getRandPM(r)
 	end
+	return flag
 end
 
 function createSpawnerPatch(surface, chunk, x, y, dist)
@@ -166,12 +167,18 @@ function createSpawnerPatch(surface, chunk, x, y, dist)
 	--game.print(dist .. " >> " .. nworms)
 	local ox = getRandPM(CHUNK_SIZE/4) --is already in the center of the chunk
 	local oy = getRandPM(CHUNK_SIZE/4)
+	local success = false
 	for i = 1, nspawners do
 		local spawnertype = getSpawnerType(dist)
 		--game.print(spawnertype)
 		local dx = ox+x+getRandPM(r)
 		local dy = oy+y+getRandPM(r)
-		tryCreateSpawner(spawnertype, surface, chunk, dx, dy)
+		if tryCreateSpawner(spawnertype, surface, chunk, dx, dy) then
+			success = true
+		end
+	end
+	if not success then --prevent placement of a worm cluster if there were no spawner spawns (ie in the middle of the forest)
+		return
 	end
 	for i = 1, nworms do
 		local wormtype = getWormType(dist)
@@ -243,18 +250,12 @@ function getWormCount(dist, spawners)
 end
 
 function getWormType(dist)
-	local s = getCosInterpolate(dist-min_worm_dist, full_spawn_dist, 3)
-	s = math.min(s, 2.75)
+	local s = getCosInterpolate(dist-min_worm_dist, full_spawn_dist*#worm_sizes/3, #worm_sizes)
+	s = math.min(s, #worm_sizes-0.25)
 	s = s+getRandPM(0.5) --randomize worm spawns a bit
 	s = math.floor(s+0.5) --round
-	if s == 0 then
-		return nil
-	elseif s == 1 then
-		return "small-worm-turret"
-	elseif s == 2 then
-		return "medium-worm-turret"
-	elseif s == 3 then
-		return "big-worm-turret"
+	if s > 0 and s <= #worm_sizes then
+		return worm_sizes[s]
 	else
 		return nil
 	end

@@ -6,6 +6,7 @@ local ore_debug = false
 local spawner_debug = false
 
 local ranTick = false
+local ranGenInit = false
 
 function controlChunk(surface, area, doOres, doSpawners)
 
@@ -16,30 +17,32 @@ function controlChunk(surface, area, doOres, doSpawners)
 		local counts = {}
 		
 		for num,ore in pairs(surface.find_entities_filtered({area = {{area.left_top.x, area.left_top.y}, {area.right_bottom.x, area.right_bottom.y}}, type="resource"})) do
-			if Config.redoOrePlacement then
-				ore.destroy()
-			else
-				local mult = getMultiply(area, ore)
-				if mult == nil or mult <= 0 then
-					if ore_debug then
-						--game.player.print("Destroyed " .. ore.name .. " @ " .. ore.position.x .. "," .. ore.position.y)
-					end
+			if not ignoreOre(ore) then
+				if Config.redoOrePlacement then
 					ore.destroy()
 				else
-					ore.amount = math.floor(ore.amount * mult)
-					
-					--game.player.print("Generated " .. ore.amount .. " of ore " .. ore.name .. ", multiply by " .. mult)
-					if ore_debug then
-						if totals[ore.name] == nil then
-							totals[ore.name] = 0
-							newtotals[ore.name] = 0
-							mults[ore.name] = 0
-							counts[ore.name] = 0
+					local mult = getMultiply(area, ore)
+					if mult == nil or mult <= 0 then
+						if ore_debug then
+							--game.player.print("Destroyed " .. ore.name .. " @ " .. ore.position.x .. "," .. ore.position.y)
 						end
-						totals[ore.name] = totals[ore.name] + ore.amount
-						mults[ore.name] = mults[ore.name] + mult
-						counts[ore.name] = counts[ore.name] + 1
-						newtotals[ore.name] = newtotals[ore.name] + ore.amount
+						ore.destroy()
+					else
+						ore.amount = math.floor(ore.amount * mult)
+						
+						--game.player.print("Generated " .. ore.amount .. " of ore " .. ore.name .. ", multiply by " .. mult)
+						if ore_debug then
+							if totals[ore.name] == nil then
+								totals[ore.name] = 0
+								newtotals[ore.name] = 0
+								mults[ore.name] = 0
+								counts[ore.name] = 0
+							end
+							totals[ore.name] = totals[ore.name] + ore.amount
+							mults[ore.name] = mults[ore.name] + mult
+							counts[ore.name] = counts[ore.name] + 1
+							newtotals[ore.name] = newtotals[ore.name] + ore.amount
+						end
 					end
 				end
 			end
@@ -74,7 +77,15 @@ function controlChunk(surface, area, doOres, doSpawners)
 		end
 	end
 end
+--[[
+script.on_init(function()
+	loadInit()
+end)
 
+script.on_load(function()
+	loadInit()
+end)
+--]]
 script.on_event(defines.events.on_tick, function(event)
 	if not ranTick and (Config.retrogenOreDistance >= 0 or Config.retrogenSpawnerDistance >= 0) then
 		if Config.retrogenSpawnerDistance >= 0 then
@@ -103,7 +114,7 @@ script.on_event(defines.events.on_tick, function(event)
 		end
 		ranTick = true
 		game.forces.player.rechart()
-		game.print("Ran load code")
+		--game.print("Ran load code")
 	end
 	
 	--local pos=game.players[1].position
@@ -111,5 +122,9 @@ script.on_event(defines.events.on_tick, function(event)
 end)
 
 script.on_event(defines.events.on_chunk_generated, function(event)	--best used with http://i.imgur.com/Fg7epFd.jpg
+	if not ranGenInit then
+		loadGenInit()
+		ranGenInit = true
+	end
 	controlChunk(event.surface, event.area, true, true)
 end)

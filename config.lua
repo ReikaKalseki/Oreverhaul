@@ -1,22 +1,5 @@
 Config = {}
 
-
---Should certain ores be distance-gated?
-Config.distanceGate = {
-	--["copper-ore"] = true,
-	["fluorite"] = true,
-	["uraninite"] = true,
-	["tungsten-ore"] = true,
-	["gem-ore"] = true,
-	["crude-oil"] = true,
-	["sulfur"] = true,
-	["titanium-ore"] = true,
-	["nickel-ore"] = true,
-	["silver-ore"] = true,
-	["gold-ore"] = true,
-	["cobalt-ore"] = true
-}
-
 Config.oreTierDistances = {
 	tier0 = 0,
 	tier1 = 40,
@@ -39,16 +22,18 @@ Config.oreTiers = {
 	["silver-ore"] = 2,
 	["crude-oil"] = 2, --vanilla
 	["lithia-water"] = 2,
+	["zinc-ore"] = 2,
 	["sulfur"] = 2,
 	["cobalt-ore"] = 3,
 	["bauxite-ore"] = 3, --aluminum
-	["zinc-ore"] = 3,
 	["gold-ore"] = 3,
 	["gem-ore"] = 3,
+	--["geothermal"] = 3,
 	["rutile-ore"] = 4, --titanium
 	["tungsten-ore"] = 4,
 	["uraninite"] = 5,
 	["fluorite"] = 5,
+	["uranium-ore"] = 5, --vanilla
 }
 
 
@@ -57,7 +42,12 @@ Config.starterOres = {
 	"coal",
 	"iron-ore",
 	"copper-ore",
-	"stone",
+	"stone"
+}
+
+--Ores unaffected by custom distribution
+Config.ignoredOres = {
+	"geothermal"
 }
 
 --How much to flat-scale the distance gating
@@ -88,20 +78,15 @@ Config.redoOrePlacement = true
 Config.redoSpawnerPlacement = true
 
 --Should retrogeneration be enabled, and if so, at what minimum radius from the center?
-Config.retrogenOreDistance = -1--180
-Config.retrogenSpawnerDistance = -1--0
---[[
---An ore-specific version of ore retrogen control, in case an ore was added.
-Config.retrogenOreSet = {
-	"sulfur"
-}--]]
+Config.retrogenOreDistance = -1
+Config.retrogenSpawnerDistance = -1
 
---[[
---If an ore is deleted due to distance gating, it is replaced with the mapping in this table
-Config.replacementTable = {}
+--These values (N1, N2) will make ore patches N times larger but 2N times rarer at the minimum and maximum distances. Intermediate distances are interpolated.
+Config.orePatchCondensationStart = 1
+Config.orePatchCondensationEnd = 3
 
-Config.replacementTable["copper-ore"] = "stone"
-Config.replacementTable["tin-ore"] = "iron-ore"
-Config.replacementTable["lead-ore"] = "iron-ore"
-Config.replacementTable["sulfur"] = "coal-ore"
-Config.replacementTable["silver-ore"] = "iron-ore"]]
+--Enable behemoth (green) worms? The worm counterpart to the green biters.
+Config.enableHugeWorms = true
+
+--Should spawners be made more durable? This helps discourage clearing large swathes of land of biters, encouraging more defences rather than just "kill everything on the map"
+Config.nestHealthFactor = 10

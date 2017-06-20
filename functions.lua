@@ -40,6 +40,78 @@ function genCachedChunk(surface, chunkloc)
 	chunkCache[chunkloc.keystring] = nil
 end
 --]]
+function loadGenInit()
+	if game.entity_prototypes["behemoth-worm-turret"] then
+		table.insert(worm_sizes, "behemoth-worm-turret")
+		--game.print("Loaded extra worms: N=" .. #worm_sizes)
+	end
+	buildOreList()
+end
+
+function buildOreList()
+	
+	maxTier = 0
+	
+	for ore, tiern in pairs(Config.oreTiers) do
+		tier = "tier" .. tiern
+		if game.entity_prototypes[ore] then
+			if tierOres[tier] == nil then
+				tierOres[tier] = {}
+			end
+			maxTier = math.max(maxTier, tiern)
+			table.insert(tierOres[tier], ore)
+			--game.print("Adding " .. ore .. " to tier " .. tier)
+		end
+	end
+	--[[
+	for ore, tiern in pairs(Config.oreTiers) do
+		tier = "tier" .. tiern
+		if tierOres[tier] then
+			tierprev = "tier" .. (tiern-1)
+			if not tierOres[tierprev] then --empty prior tier, creating a 'gap'
+				fillLowerTier(tiern-1)
+			end
+		end
+	end
+	--]]
+	
+	for ore, tiern in pairs(Config.oreTiers) do
+		if game.entity_prototypes[ore] then
+			tier = "tier" .. tiern
+			for i=tiern,maxTier do
+				tieri = "tier" .. i
+				if tierOresSum[tieri] == nil then
+					tierOresSum[tieri] = {}
+				end
+				table.insert(tierOresSum[tieri], ore)
+				--game.print("Adding " .. ore .. " to tier " .. i)
+			end
+		end
+	end
+	
+end
+
+function fillLowerTier(tier)
+	if tier <= 0 then --never need to fill this tier
+		return
+	end
+	--game.print("Filling void tier " .. tier)
+	tiermin_num = tier-1
+	tiermin = "tier" .. tiermin_num
+	while not tierOres[tiermin] do
+		tiermin_num = tiermin_num-1
+		tiermin = "tier" .. tiermin_num
+	end
+	--game.print("Filling with tier " .. tiermin)
+	for i=tiermin_num+1,tier do
+		tierOres["tier" .. i] = {}
+		for name,ore in pairs(tierOres[tiermin]) do
+			table.insert(tierOres["tier" .. i], ore)
+			--game.print("Copying " .. ore .. " from tier " .. tiermin .. " to tier " .. i)
+		end
+	end
+end
+
 function getCosInterpolate(x, xmax, ymax)
 	if x >= xmax then
 		return ymax
@@ -52,8 +124,19 @@ function getRandPM(range)
 	return nextDouble()*range*2-range
 end
 
+function ignoreOre(orec)
+	--game.print("Testing ignore of ore " .. orec.name)
+	for idx,ore in pairs(Config.ignoredOres) do
+		--game.print("Comparing to " .. ore)
+		if ore == orec.name then
+			return true
+		end
+	end
+	return false
+end
+
 function isLiquid(ore)
-	return ore == "crude-oil" or ore == "lithia-water" or ore == "ground-water"
+	return ore == "crude-oil" or ore == "lithia-water" or ore == "ground-water" or ore == "geothermal"
 end
 
 function isInChunk(x, y, chunk)
@@ -104,7 +187,7 @@ function getDistanceRichness(ore, x, y)
 	--local ret = 0.2-20+40/(1+((2.71*Config.distanceScaling)^(-dist_factor*(dx*dx+dy*dy-dist_const))))
 	local ret = 0.25+getCosInterpolate(dd, ore_plateau*Config.oreDistanceFactor*Config.oreRichnessDistanceFactor, ore_plateau_value*Config.oreRichnessScalingFactor)
 	--game.print(dd .. " >> " .. ret)
-	if ore == "crude-oil" then
+	if ore == "crude-oil" or ore == "lithia-water" then
 		ret = math.min(ret/2, ore_plateau_value*Config.oreRichnessScalingFactor/4)
 	end
 	if ore == "ground-water" then
@@ -252,16 +335,16 @@ function printDebug(area, totals, newtotals, mults, counts)
 end
 
 function isWaterEdge(surface, x, y)
-	if surface.get_tile{x-1, y}.prototype.layer == "water-tile" then
+	if surface.get_tile{x-1, y}.valid and surface.get_tile{x-1, y}.prototype.layer == "water-tile" then
 		return true
 	end
-	if surface.get_tile{x+1, y}.prototype.layer == "water-tile" then
+	if surface.get_tile{x+1, y}.valid and surface.get_tile{x+1, y}.prototype.layer == "water-tile" then
 		return true
 	end
-	if surface.get_tile{x, y-1}.prototype.layer == "water-tile" then
+	if surface.get_tile{x, y-1}.valid and surface.get_tile{x, y-1}.prototype.layer == "water-tile" then
 		return true
 	end
-	if surface.get_tile{x, y+1}.prototype.layer == "water-tile" then
+	if surface.get_tile{x, y+1}.valid and surface.get_tile{x, y+1}.prototype.layer == "water-tile" then
 		return true
 	end
 end
