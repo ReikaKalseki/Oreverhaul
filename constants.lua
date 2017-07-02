@@ -7,9 +7,9 @@ ore_plateau = 5000 --ore richness plateaus here
 ore_plateau_value = 10 --multiplier at plateau
 
 core_distance = 120 --the distance defining the "start area" to force all necessary starting ores and prevent any spawners
-base_ore_patch_chance = 0.25--0.25--0.125--0.5--0.125
+base_ore_patch_chance = 0.4--0.25--0.25--0.125--0.5--0.125
 final_ore_patch_chance = 0.25--0.675--0.5--0.75--0.5
-center_patch_chance = 1.5
+center_patch_chance = 1.625--1.5
 
 min_spawner_dist = 200 --was 300
 min_spitter_dist = 400--500

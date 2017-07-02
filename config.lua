@@ -36,6 +36,9 @@ Config.oreTiers = {
 	["uranium-ore"] = 5, --vanilla
 }
 
+Config.richnessFactors = { --add entries here to add flat richness multipliers by ore type. Unspecified ores default to one. Some ores - notably liquids - are ignored in favor of internal code.
+	["sulfur"] = 0.6
+}
 
 --Ores that MUST be present near the center
 Config.starterOres = {
@@ -54,7 +57,7 @@ Config.ignoredOres = {
 Config.oreDistanceFactor = 1
 Config.oreRichnessDistanceFactor = 1
 Config.oreTierDistanceFactor = 2--1
-Config.spawnerDistanceFactor = 0.75--0.5--1
+Config.spawnerDistanceFactor = 1.25--0.75--0.5--1
 
 --Richness Scaling
 Config.richnessScaling = true
@@ -83,7 +86,7 @@ Config.retrogenSpawnerDistance = -1
 
 --These values (N1, N2) will make ore patches N times larger but 2N times rarer at the minimum and maximum distances. Intermediate distances are interpolated.
 Config.orePatchCondensationStart = 1
-Config.orePatchCondensationEnd = 3
+Config.orePatchCondensationEnd = 2--3
 
 --Enable behemoth (green) worms? The worm counterpart to the green biters.
 Config.enableHugeWorms = true

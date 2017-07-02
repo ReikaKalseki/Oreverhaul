@@ -303,14 +303,19 @@ function getOreSpecificBias(dd, ore)
 	if ore == "stone" then
 		return math.min(1.8, math.max(1.2, dd/5000))
 	end
+	--[[
 	if ore == "sulfur" then
-		return 0.8--0.6
+		return 0.6--0.8--0.6
 	end
+	--]]
 	if ore == "coal" then
 		return math.min(1.1, math.max(0.9, dd/1000))
 	end
 	if isLiquid(ore) then
 		return 40
+	end
+	if Config.richnessFactors[ore] then
+		return Config.richnessFactors[ore]
 	end
 	
 	return 1

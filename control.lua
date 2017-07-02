@@ -109,7 +109,7 @@ script.on_event(defines.events.on_tick, function(event)
 				local dx = x*CHUNK_SIZE+CHUNK_SIZE/2
 				local dy = y*CHUNK_SIZE+CHUNK_SIZE/2
 				local dist = math.sqrt(dx*dx+dy*dy)
-				controlChunk(surface, area, Config.retrogenOreDistance <= dist, Config.retrogenSpawnerDistance <= dist)
+				controlChunk(surface, area, (Config.retrogenOreDistance >= 0 and Config.retrogenOreDistance <= dist), (Config.retrogenSpawnerDistance >= 0 and Config.retrogenSpawnerDistance <= dist))
 			end
 		end
 		ranTick = true
