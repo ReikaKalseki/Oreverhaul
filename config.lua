@@ -68,6 +68,9 @@ Config.oreRichnessScalingFactor = 2.5
 --A flat-rate multiplier for richness.
 Config.flatRichnessFactor = 1
 
+--Does the richness plateau at an internally calculated distance, or does it keep growing forever? Note that this can create ore patches with billions of ore if set to false.
+Config.plateauRichness = false
+
 --Spawner Scaling
 Config.spawnerScaling = true
 

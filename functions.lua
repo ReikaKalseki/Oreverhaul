@@ -184,8 +184,17 @@ function getDistanceRichness(ore, x, y)
 	local dx = math.abs(x)
 	local dy = math.abs(y)
 	local dd = math.sqrt(dx*dx+dy*dy)
+	local maxd = ore_plateau*Config.oreDistanceFactor*Config.oreRichnessDistanceFactor
+	local platval = ore_plateau_value*Config.oreRichnessScalingFactor
+	if dd >= maxd then
+		if Config.plateauRichness then
+			return platval
+		else
+			return platval+Config.oreRichnessScalingFactor*unclamped_ore_scaling*(dd-maxd)
+		end
+	end
 	--local ret = 0.2-20+40/(1+((2.71*Config.distanceScaling)^(-dist_factor*(dx*dx+dy*dy-dist_const))))
-	local ret = 0.25+getCosInterpolate(dd, ore_plateau*Config.oreDistanceFactor*Config.oreRichnessDistanceFactor, ore_plateau_value*Config.oreRichnessScalingFactor)
+	local ret = 0.25+getCosInterpolate(dd, maxd, platval)
 	--game.print(dd .. " >> " .. ret)
 	if ore == "crude-oil" or ore == "lithia-water" then
 		ret = math.min(ret/2, ore_plateau_value*Config.oreRichnessScalingFactor/4)
