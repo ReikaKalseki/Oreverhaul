@@ -1,10 +1,10 @@
 {
   "name": "Oreverhaul",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "title": "Oreverhaul",
   "author": "Reika",
   "homepage": "",
   "factorio_version" : "0.15",
   "dependencies": ["base"],
-  "description": "Overhauls ore gen to increase density at larger distances, but forces some resources to only generate further out."
+  "description": "Overhauls ore gen to increase density at larger distances, but forces some resources to only generate further out. Fully configurable."
 }

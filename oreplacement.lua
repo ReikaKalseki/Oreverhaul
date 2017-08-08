@@ -51,11 +51,11 @@ function getMaxOreTierAt(dist)
 	local idx = 0
 	for tier, req in pairs(Config.oreTierDistances) do
 		--[[
-		if tierOres[tier] then
+		if global.oreverhaul.tierOres[tier] then
 			if req ~= nil then
-				--game.print(tierOres[tier] .. ": " .. (req*Config.oreDistanceFactor*Config.oreTierDistanceFactor) .. "/" .. dist)
+				--game.print(global.oreverhaul.tierOres[tier] .. ": " .. (req*Config.oreDistanceFactor*Config.oreTierDistanceFactor) .. "/" .. dist)
 				game.print(dist)
-				game.print(tierOres[tier])
+				game.print(global.oreverhaul.tierOres[tier])
 				game.print(req*Config.oreDistanceFactor*Config.oreTierDistanceFactor)
 			else
 				game.print("No requirement(?!) for " .. tier)
@@ -64,11 +64,11 @@ function getMaxOreTierAt(dist)
 			game.print("No ores for " .. tier)
 		end
 		--]]
-		if tierOresSum[tier] and req*Config.oreDistanceFactor*Config.oreTierDistanceFactor <= dist and idx > ret then
+		if global.oreverhaul.tierOresSum[tier] and req*Config.oreDistanceFactor*Config.oreTierDistanceFactor <= dist and idx > ret then
 			--[[
 			game.print("-----------------------")
 			game.print("Validating tier " .. tier .. ". Ores: ")
-			for k, v in pairs(tierOres[tier]) do
+			for k, v in pairs(global.oreverhaul.tierOres[tier]) do
 				game.print(v)
 			end
 			game.print("-----------------------")
@@ -89,8 +89,8 @@ function getOreForPlacementAt(dist)
 		
 	--[[
 	game.print(tier .. "/" .. maxtier)
-	game.print(tierOres[tier])
-	for k, v in pairs(tierOres[tier]) do
+	game.print(global.oreverhaul.tierOres[tier])
+	for k, v in pairs(global.oreverhaul.tierOres[tier]) do
 	game.print(v)
 	end
 	--]]
@@ -98,12 +98,15 @@ function getOreForPlacementAt(dist)
 	--[[
 	game.print("--------------------------")
 	game.print(dist .. " -> " .. maxtier)
-	for k, v in pairs(tierOresSum["tier" .. maxtier]) do
+	for k, v in pairs(global.oreverhaul.tierOresSum["tier" .. maxtier]) do
 		game.print(maxtier .. " : " .. v)
 	end
 	--]]
 	
-	return getRandomTableEntry(tierOresSum["tier" .. maxtier])
+	if not global.oreverhaul.tierOresSum then error("Null ore table!") end
+	if not global.oreverhaul.tierOresSum["tier" .. maxtier] or #global.oreverhaul.tierOresSum["tier" .. maxtier] == 0 then error("No ores defined for tier " .. maxtier .. "!") end
+	
+	return getRandomTableEntry(global.oreverhaul.tierOresSum["tier" .. maxtier])
 end
 
 function getCondensationFactor(dist)

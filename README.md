@@ -1,5 +1,5 @@
-# NauvisDay
-Allows much more detailed and more progression-based (and often train-focused) generation of ores.
+# Oreverhaul
+Allows much more detailed and more progression-based (and often train-focused) generation of ores. Fully configurable.
 -----------------
 Primary Features:
 Allows for gating ore by distance, so that more advanced or lategame ores require further exploration

@@ -5,10 +5,33 @@ require "config"
 local ore_debug = false
 local spawner_debug = false
 
-local ranTick = false
-local ranGenInit = false
+function initGlobal(force)
+	if not global.oreverhaul then
+		global.oreverhaul = {}
+	end
+	if force or global.oreverhaul.ranTick == nil then
+		global.oreverhaul.ranTick = false
+	end
+	if game and game.entity_prototypes and (force or global.oreverhaul.availableWorms == nil or #global.oreverhaul.availableWorms == 0) then
+		buildWormList()
+	end
+	if game and game.entity_prototypes and (force or global.oreverhaul.tierOresSum == nil or #global.oreverhaul.tierOresSum == 0) then
+		buildOreList()
+	end
+end
+
+initGlobal(true)
+
+script.on_init(function()
+	initGlobal(true)
+end)
+
+script.on_configuration_changed(function()
+	initGlobal(true)
+end)
 
 function controlChunk(surface, area, doOres, doSpawners)
+	initGlobal(false)
 
 	if doOres then
 		local totals = {}
@@ -77,17 +100,11 @@ function controlChunk(surface, area, doOres, doSpawners)
 		end
 	end
 end
---[[
-script.on_init(function()
-	loadInit()
-end)
 
-script.on_load(function()
-	loadInit()
-end)
---]]
 script.on_event(defines.events.on_tick, function(event)
-	if not ranTick and (Config.retrogenOreDistance >= 0 or Config.retrogenSpawnerDistance >= 0) then
+	initGlobal(false)
+	
+	if not global.oreverhaul.ranTick and (Config.retrogenOreDistance >= 0 or Config.retrogenSpawnerDistance >= 0) then
 		if Config.retrogenSpawnerDistance >= 0 then
 			game.forces["enemy"].kill_all_units()
 		end
@@ -112,8 +129,10 @@ script.on_event(defines.events.on_tick, function(event)
 				controlChunk(surface, area, (Config.retrogenOreDistance >= 0 and Config.retrogenOreDistance <= dist), (Config.retrogenSpawnerDistance >= 0 and Config.retrogenSpawnerDistance <= dist))
 			end
 		end
-		ranTick = true
-		game.forces.player.rechart()
+		global.oreverhaul.ranTick = true
+		for _,force in game.forces do
+			force.player.rechart()
+		end
 		--game.print("Ran load code")
 	end
 	
@@ -121,10 +140,6 @@ script.on_event(defines.events.on_tick, function(event)
 	--for k,v in pairs(game.surfaces.nauvis.find_entities_filtered{area={{pos.x-1,pos.y-1},{pos.x+1,pos.y+1}}, type="resource"}) do v.destroy() end
 end)
 
-script.on_event(defines.events.on_chunk_generated, function(event)	--best used with http://i.imgur.com/Fg7epFd.jpg
-	if not ranGenInit then
-		loadGenInit()
-		ranGenInit = true
-	end
+script.on_event(defines.events.on_chunk_generated, function(event)
 	controlChunk(event.surface, event.area, true, true)
 end)

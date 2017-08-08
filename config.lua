@@ -91,6 +91,9 @@ Config.retrogenSpawnerDistance = -1
 Config.orePatchCondensationStart = 1
 Config.orePatchCondensationEnd = 2--3
 
+--If false, richness is a global parameter shared by all ores, so at the same distance, explicit multipliers notwithstanding, iron, tin, gold, and uranium and so on will have the same richness. If true, each ore starts its richness curve "fresh" from when it first appears. So if ore A appears at distance X and B at distance Y, the richnesses would be equal at N blocks from X or Y respectively.
+Config.richnessPerOre = false
+
 --Enable behemoth (green) worms? The worm counterpart to the green biters.
 Config.enableHugeWorms = true
 

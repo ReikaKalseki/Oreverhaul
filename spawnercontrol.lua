@@ -250,12 +250,12 @@ function getWormCount(dist, spawners)
 end
 
 function getWormType(dist)
-	local s = getCosInterpolate(dist-min_worm_dist, full_spawn_dist*#worm_sizes/3, #worm_sizes)
-	s = math.min(s, #worm_sizes-0.25)
+	local s = getCosInterpolate(dist-min_worm_dist, full_spawn_dist*#global.oreverhaul.availableWorms/3, #global.oreverhaul.availableWorms)
+	s = math.min(s, #global.oreverhaul.availableWorms-0.25)
 	s = s+getRandPM(0.5) --randomize worm spawns a bit
 	s = math.floor(s+0.5) --round
-	if s > 0 and s <= #worm_sizes then
-		return worm_sizes[s]
+	if s > 0 and s <= #global.oreverhaul.availableWorms then
+		return global.oreverhaul.availableWorms[s]
 	else
 		return nil
 	end

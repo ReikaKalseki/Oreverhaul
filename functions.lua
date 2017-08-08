@@ -40,35 +40,41 @@ function genCachedChunk(surface, chunkloc)
 	chunkCache[chunkloc.keystring] = nil
 end
 --]]
-function loadGenInit()
+function buildWormList()
+	global.oreverhaul.availableWorms = {"small-worm-turret", "medium-worm-turret", "big-worm-turret"}
+	
 	if game.entity_prototypes["behemoth-worm-turret"] then
-		table.insert(worm_sizes, "behemoth-worm-turret")
-		--game.print("Loaded extra worms: N=" .. #worm_sizes)
+		table.insert(global.oreverhaul.availableWorms, "behemoth-worm-turret")
+		--game.print("Loaded extra worms: N=" .. #global.oreverhaul.availableWorms)
 	end
-	buildOreList()
 end
 
 function buildOreList()
 	
-	maxTier = 0
+	global.oreverhaul.tierOres = {}
+	global.oreverhaul.tierOresSum = {}
+	maxTier = 0	
+	
+	--game.print("Oreverhaul: Building ore list...")
 	
 	for ore, tiern in pairs(Config.oreTiers) do
 		tier = "tier" .. tiern
 		if game.entity_prototypes[ore] then
-			if tierOres[tier] == nil then
-				tierOres[tier] = {}
+			--game.print("Oreverhaul: Detected ore '" .. ore .. "' @ tier " .. tier)
+			if global.oreverhaul.tierOres[tier] == nil then
+				global.oreverhaul.tierOres[tier] = {}
 			end
 			maxTier = math.max(maxTier, tiern)
-			table.insert(tierOres[tier], ore)
+			table.insert(global.oreverhaul.tierOres[tier], ore)
 			--game.print("Adding " .. ore .. " to tier " .. tier)
 		end
 	end
 	--[[
 	for ore, tiern in pairs(Config.oreTiers) do
 		tier = "tier" .. tiern
-		if tierOres[tier] then
+		if global.oreverhaul.tierOres[tier] then
 			tierprev = "tier" .. (tiern-1)
-			if not tierOres[tierprev] then --empty prior tier, creating a 'gap'
+			if not global.oreverhaul.tierOres[tierprev] then --empty prior tier, creating a 'gap'
 				fillLowerTier(tiern-1)
 			end
 		end
@@ -80,14 +86,21 @@ function buildOreList()
 			tier = "tier" .. tiern
 			for i=tiern,maxTier do
 				tieri = "tier" .. i
-				if tierOresSum[tieri] == nil then
-					tierOresSum[tieri] = {}
+				if global.oreverhaul.tierOresSum[tieri] == nil then
+					global.oreverhaul.tierOresSum[tieri] = {}
 				end
-				table.insert(tierOresSum[tieri], ore)
-				--game.print("Adding " .. ore .. " to tier " .. i)
+				table.insert(global.oreverhaul.tierOresSum[tieri], ore)
+				--game.print("Oreverhaul: Adding " .. ore .. " to tier " .. i)
 			end
 		end
 	end
+	
+	--[[
+	game.print("Oreverhaul: Ore List:")
+	for k,v in pairs(global.oreverhaul.tierOresSum) do
+		game.print("Tier " .. k .. ": " .. #v .. " ores defined.")
+	end
+	--]]
 	
 end
 
@@ -98,16 +111,16 @@ function fillLowerTier(tier)
 	--game.print("Filling void tier " .. tier)
 	tiermin_num = tier-1
 	tiermin = "tier" .. tiermin_num
-	while not tierOres[tiermin] do
+	while not global.oreverhaul.tierOres[tiermin] do
 		tiermin_num = tiermin_num-1
 		tiermin = "tier" .. tiermin_num
 	end
 	--game.print("Filling with tier " .. tiermin)
 	for i=tiermin_num+1,tier do
-		tierOres["tier" .. i] = {}
-		for name,ore in pairs(tierOres[tiermin]) do
-			table.insert(tierOres["tier" .. i], ore)
-			--game.print("Copying " .. ore .. " from tier " .. tiermin .. " to tier " .. i)
+		global.oreverhaul.tierOres["tier" .. i] = {}
+		for name,ore in pairs(global.oreverhaul.tierOres[tiermin]) do
+			table.insert(global.oreverhaul.tierOres["tier" .. i], ore)
+			--game.print("Oreverhaul: Copying " .. ore .. " from tier " .. tiermin .. " to tier " .. i)
 		end
 	end
 end
@@ -184,6 +197,9 @@ function getDistanceRichness(ore, x, y)
 	local dx = math.abs(x)
 	local dy = math.abs(y)
 	local dd = math.sqrt(dx*dx+dy*dy)
+	if Config.richnessPerOre then
+		dd = math.max(0, dd-getMinGenerationDistance(ore))
+	end
 	local maxd = ore_plateau*Config.oreDistanceFactor*Config.oreRichnessDistanceFactor
 	local platval = ore_plateau_value*Config.oreRichnessScalingFactor
 	if dd >= maxd then
