@@ -120,6 +120,9 @@ Config.oreRichnessDistanceFactor = 1
 --How much to flat-scale the distance gating (Ore Tier Distances) AND richness curve. Basically the above two options combined.
 Config.oreDistanceFactor = 1
 
+--How much to flat-scale the ore patch size distance scaling. Values larger than one "compress" the scaling, values less than one (but more than zero) expand it, all by that corresponding factor.
+Config.oreSizeDistanceFactor = 1
+
 --Like the above, but for spawners (base size, worm tier, etc)
 Config.spawnerDistanceFactor = 1.25--0.75--0.5--1
 
@@ -167,5 +170,5 @@ Config.retrogenOreDistance = -1
 Config.retrogenSpawnerDistance = -1
 
 --Should newly-built enemy bases have the distance (worm size, spawner type, etc) restrictions and distance scaling forcibly applied?
---Helpful if you have a nice clear ore patch then get a spitter nest plopped on it four hours into the game. Has no significant performance impact unless your biters are expanding more aggressively than AIs in a game of Civ.
+--Helpful if you have a nice clear ore patch then get a spitter nest plopped on it four hours into the game. No performance impact unless your biters are expanding more aggressively than AIs in a game of Civilization on Deity.
 Config.enforceSpawnerTieringForBuiltBases = true

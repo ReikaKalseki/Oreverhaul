@@ -170,8 +170,8 @@ function tryCreateOrePatch(surface, chunk, x, y)
 			local size = getOrePatchSize(dd)*cf
 			local plopsize = getOrePlopSize(dd)*(1+(cf-1)/2)
 			if Config.radiusFactors[ore] then
-				size = math.max(10, size*Config.radiusFactors[ore])
-				plopsize = math.max(5, plopsize*Config.radiusFactors[ore])
+				size = math.max(min_patch_size, size*Config.radiusFactors[ore])
+				plopsize = math.max(min_plop_size, plopsize*Config.radiusFactors[ore])
 			end
 			--game.print(dd .. " >> " .. size .. " & " .. plopsize)
 			--testConsistency(x, y, size)
@@ -182,11 +182,11 @@ function tryCreateOrePatch(surface, chunk, x, y)
 end
 
 function getOrePatchSize(dd)
-	return math.min(10+dd/60, 24)
+	return math.min(min_patch_size+(dd/60)*Config.oreSizeDistanceFactor, max_patch_size)
 end
 
 function getOrePlopSize(dd)
-	return math.min(5+dd/120, 12)
+	return math.min(min_plop_size+(dd/120)*Config.oreSizeDistanceFactor, max_plop_size)
 end
 
 function getSpillSearchRadius(x, y, dd)

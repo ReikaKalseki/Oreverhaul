@@ -13,6 +13,11 @@ base_ore_patch_chance = 0.4--0.25--0.25--0.125--0.5--0.125
 final_ore_patch_chance = 0.25--0.675--0.5--0.75--0.5
 center_patch_chance = 1.625--1.5
 
+min_plop_size = 5
+max_plop_size = 12
+min_patch_size = 10
+max_patch_size = 24
+
 min_spawner_dist = 200 --was 300
 min_spitter_dist = 400--500
 min_worm_dist = 500--400

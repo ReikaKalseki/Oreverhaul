@@ -69,9 +69,9 @@ function buildOreList()
 			--game.print("Adding " .. ore .. " to tier " .. tier)
 		else
 			if game then
-				game.print("Ore '" .. ore .. "' was specified in tier " .. tiern .. ", but that ore does not exist in game. Skipping.")
+				game.print("Oreverhaul: Ore '" .. ore .. "' was specified in tier " .. tiern .. ", but that ore does not exist in game. Skipping.")
 			end
-			log("Ore '" .. ore .. "' was specified in tier " .. tiern .. ", but that ore does not exist in game. Skipping.")
+			log("Oreverhaul: Ore '" .. ore .. "' was specified in tier " .. tiern .. ", but that ore does not exist in game. Skipping.")
 		end
 	end
 	--[[
