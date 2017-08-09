@@ -67,6 +67,11 @@ function buildOreList()
 			maxTier = math.max(maxTier, tiern)
 			table.insert(global.oreverhaul.tierOres[tier], ore)
 			--game.print("Adding " .. ore .. " to tier " .. tier)
+		else
+			if game then
+				game.print("Ore '" .. ore .. "' was specified in tier " .. tiern .. ", but that ore does not exist in game. Skipping.")
+			end
+			log("Ore '" .. ore .. "' was specified in tier " .. tiern .. ", but that ore does not exist in game. Skipping.")
 		end
 	end
 	--[[

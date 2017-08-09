@@ -9,7 +9,7 @@ function createResource(orename, surface, chunk, dx, dy, dr, drm)
 	end
 end
 
-function createOrePlop(orename, surface, chunk, x, y, size)
+local function createOrePlop(orename, surface, chunk, x, y, size)
 	for i = -size, size do
 		for k = -size, size do
 			local dr = i*i+k*k
@@ -22,7 +22,7 @@ function createOrePlop(orename, surface, chunk, x, y, size)
 	end
 end
 
-function createOrePatch(orename, surface, chunk, x, y, totalSize, plopSize, cf)
+local function createOrePatch(orename, surface, chunk, x, y, totalSize, plopSize, cf)
 	local nplop = math.ceil(nextInt(8)*cf)
 	local r = totalSize/4
 	local ox = getRandPM(CHUNK_SIZE/4) --is already in the center of the chunk
@@ -35,7 +35,7 @@ function createOrePatch(orename, surface, chunk, x, y, totalSize, plopSize, cf)
 	end
 end
 
-function createLiquidPatch(orename, surface, chunk, x, y, wells)
+local function createLiquidPatch(orename, surface, chunk, x, y, wells)
 	local r = 6
 	local ox = getRandPM(CHUNK_SIZE/4) --is already in the center of the chunk
 	local oy = getRandPM(CHUNK_SIZE/4)
@@ -129,10 +129,10 @@ function getOrePatchChance(dist)
 	end
 	local dm = ore_plateau*Config.oreDistanceFactor
 	if dist >= dm then
-		return final_ore_patch_chance
+		return final_ore_patch_chance*Config.orePatchChanceFactor
 	end
 	local dc = final_ore_patch_chance-base_ore_patch_chance
-	return base_ore_patch_chance+dc*dist/dm
+	return (base_ore_patch_chance+dc*dist/dm)*Config.orePatchChanceFactor
 end
 
 local vals = {}
@@ -169,6 +169,10 @@ function tryCreateOrePatch(surface, chunk, x, y)
 		else
 			local size = getOrePatchSize(dd)*cf
 			local plopsize = getOrePlopSize(dd)*(1+(cf-1)/2)
+			if Config.radiusFactors[ore] then
+				size = math.max(10, size*Config.radiusFactors[ore])
+				plopsize = math.max(5, plopsize*Config.radiusFactors[ore])
+			end
 			--game.print(dd .. " >> " .. size .. " & " .. plopsize)
 			--testConsistency(x, y, size)
 			createOrePatch(ore, surface, chunk, x, y, size, plopsize, cf)

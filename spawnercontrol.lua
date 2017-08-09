@@ -1,20 +1,20 @@
 require "constants"
 require "config"
 
-function modifySpawners(area, spawner)
+function modifySpawners(spawner)
 	local dx = math.abs(spawner.position.x)
 	local dy = math.abs(spawner.position.y)
 	local dd = math.sqrt(dx*dx+dy*dy)
-	local f = getSpawnerProbability(area, dx, dy, dd, spawner)
+	local f = getSpawnerProbability(dx, dy, dd, spawner)
 	--game.player.print("Spawner: " .. spawner.name .. " @ " .. dd .. ", f=" .. f)
 	if nextDouble() > f then
 		spawner.destroy()
 	else
 		if spawner.name == "spitter-spawner" then
-			local f2 = getSpawnerReplacement(area, dx, dy, dd)
+			local f2 = getSpawnerReplacement(dx, dy, dd)
 			--game.player.print("Spawner: " .. spawner.name .. " @ " .. dd .. ", f2=" .. f2)
 			if nextDouble() < f2 then
-				replaceSpitterSpawner(area, dx, dy, dd, spawner)
+				replaceSpitterSpawner(dx, dy, dd, spawner)
 			end
 		end
 	end
@@ -55,11 +55,11 @@ function downsizeWorm(worm)
 	worm.destroy()
 end
 
-function modifyWorms(area, worm)
+function modifyWorms(worm)
 	local dx = math.abs(worm.position.x)
 	local dy = math.abs(worm.position.y)
 	local dd = math.sqrt(dx*dx+dy*dy)
-	local f = getWormProbability(area, dx, dy, dd, worm)
+	local f = getWormProbability(dx, dy, dd, worm)
 	--game.player.print("worm: " .. worm.name .. " @ " .. dd .. ", f=" .. f)
 	local r = nextDouble()
 	if r > f then
@@ -69,7 +69,7 @@ function modifyWorms(area, worm)
 	end
 end
 
-function getWormProbability(area, dx, dy, dd, worm)
+function getWormProbability(dx, dy, dd, worm)
 	if dd < min_worm_dist then
 		return 0
 	else
@@ -77,7 +77,7 @@ function getWormProbability(area, dx, dy, dd, worm)
 	end
 end
 
-function getSpawnerProbability(area, dx, dy, dd, spawner)
+function getSpawnerProbability(dx, dy, dd, spawner)
 	if dd < min_spawner_dist then
 		return 0
 	else
@@ -86,7 +86,7 @@ function getSpawnerProbability(area, dx, dy, dd, spawner)
 	end
 end
 
-function getSpawnerReplacement(area, dx, dy, dd)
+function getSpawnerReplacement(dx, dy, dd)
 	if dd < min_spitter_dist then
 		return 1
 	else
@@ -94,7 +94,7 @@ function getSpawnerReplacement(area, dx, dy, dd)
 	end
 end
 
-function replaceSpitterSpawner(area, dx, dy, dd, spawner)
+function replaceSpitterSpawner(dx, dy, dd, spawner)
 	spawner.surface.create_entity{name = "biter-spawner", direction = spawner.direction, position = {x = spawner.position.x,y = spawner.position.y}, force = spawner.force}
 	--game.player.print("Replacing spitter spawner @ " .. dx .. "," .. dy)
 	spawner.destroy()

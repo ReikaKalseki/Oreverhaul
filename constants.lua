@@ -34,8 +34,3 @@ min_grouping_dist = min_grouping_dist*Config.spawnerDistanceFactor
 
 min_spawner_chance = min_spawner_chance*Config.spawnerRateFactor
 full_spawn_amount = full_spawn_amount*Config.spawnerRateFactor
-
---deprecated in favor of one in global
---worm_sizes = {"small-worm-turret", "medium-worm-turret", "big-worm-turret"}
---tierOres = {} -- a cache of ores by tier determined from ore tiers
---tierOresSum = {} -- like the above but where each entry also contains the previous entries

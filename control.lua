@@ -91,11 +91,11 @@ function controlChunk(surface, area, doOres, doSpawners)
 			redoSpawnersAndWorms(surface, area)
 		elseif Config.spawnerScaling then
 			for num,spawner in pairs(surface.find_entities_filtered({area = {{area.left_top.x, area.left_top.y}, {area.right_bottom.x, area.right_bottom.y}}, type="unit-spawner"})) do
-				modifySpawners(area, spawner)
+				modifySpawners(spawner)
 			end
 			
 			for num,worm in pairs(surface.find_entities_filtered({area = {{area.left_top.x, area.left_top.y}, {area.right_bottom.x, area.right_bottom.y}}, type="turret"})) do
-				modifyWorms(area, worm)
+				modifyWorms(worm)
 			end
 		end
 	end
@@ -142,4 +142,16 @@ end)
 
 script.on_event(defines.events.on_chunk_generated, function(event)
 	controlChunk(event.surface, event.area, true, true)
+end)
+
+script.on_event(defines.events.on_biter_base_built, function(event)
+	local base = event.entity
+	if Config.enforceSpawnerTieringForBuiltBases then
+		if base.type == "unit-spawner" then
+			modifySpawners(base)
+		end
+		if base.type == "turret" then
+			modifyWorms(base)
+		end
+	end
 end)
