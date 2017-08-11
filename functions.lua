@@ -57,6 +57,7 @@ function buildOreList()
 	
 	--game.print("Oreverhaul: Building ore list...")
 	
+	local flag = false
 	for ore, tiern in pairs(Config.oreTiers) do
 		tier = "tier" .. tiern
 		if game.entity_prototypes[ore] then
@@ -68,11 +69,17 @@ function buildOreList()
 			table.insert(global.oreverhaul.tierOres[tier], ore)
 			--game.print("Adding " .. ore .. " to tier " .. tier)
 		else
-			if game then
-				game.print("Oreverhaul: Ore '" .. ore .. "' was specified in tier " .. tiern .. ", but that ore does not exist in game. Skipping.")
+			if not global.oreverhaul.loggedMissingOre then
+				if game then
+					game.print("Oreverhaul: Ore '" .. ore .. "' was specified in tier " .. tiern .. ", but that ore does not exist in game. Skipping.")
+				end
+				log("Oreverhaul: Ore '" .. ore .. "' was specified in tier " .. tiern .. ", but that ore does not exist in game. Skipping.")
+				flag = true
 			end
-			log("Oreverhaul: Ore '" .. ore .. "' was specified in tier " .. tiern .. ", but that ore does not exist in game. Skipping.")
 		end
+	end
+	if flag then
+		global.oreverhaul.loggedMissingOre = true
 	end
 	--[[
 	for ore, tiern in pairs(Config.oreTiers) do
@@ -342,7 +349,7 @@ function getOreSpecificBias(dd, ore)
 		return math.min(1.1, math.max(0.9, dd/1000))
 	end
 	if isLiquid(ore) then
-		return 40
+		return game.entity_prototypes[ore].infinite_resource and 40 or math.min(200, 40+dd/100)
 	end
 	if Config.richnessFactors[ore] then
 		return Config.richnessFactors[ore]

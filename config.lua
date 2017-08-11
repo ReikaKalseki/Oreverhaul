@@ -32,6 +32,7 @@ Config = {} --ignore this line; technical
 --#################################################################################################################
 
 --Reasonably self-explanatory. How far (in tiles) must you travel before tier N ores begin to generate?
+--You can also set all tier distances to zero to effectively disable tiering.
 Config.oreTierDistances = {
 	tier0 = 0,
 	tier1 = 40,
@@ -65,7 +66,6 @@ Config.oreTiers = {
 	["bauxite-ore"] = 3, --alumin(i)um
 	["gold-ore"] = 3,
 	["gem-ore"] = 3,
-	--["geothermal"] = 3,
 	["rutile-ore"] = 4, --titanium
 	["tungsten-ore"] = 4,
 	["uraninite"] = 5, --not really relevant anymore as of 0.15, unless UraniumPower still exists(?)
@@ -111,6 +111,19 @@ Config.radiusFactors = {
 	["sulfur"] = 0.75
 }
 
+--At a given distance, there is a set of ores which are permitted for generation (determined by distance gating). When an ore patch is to be generated, one entry in that list is selected.
+--Normally every ore is equally likely to generate, being randomly selected from that set; this option allows you to reduce the overall frequency of certain ores (those patches may become something else).
+--Anti-biasing triggers a "reroll" of the ore if the first selection has a corresponding value; it may select the same ore again (with the same chance as before),
+--Anti-biasing is applied once per patch only; even if the new ore is the same as the old one, it will NOT reroll again, nor will it do anything if the new ore also has an anti-bias.
+--The numerical effect of an anti-bias on a certain ore, assuming N possible ores, and an anti-bias of 'f', is a chance reduction from 1/N to (1/N)-((1/N)*f*(1-1/N)).
+--So, for example, if sulfur is one of eight candidate ores, and has a 50% anti-bias, one half of the sulfur gets "rerolled", 7/8ths of which becomes something other than sulfur, or a total reduction of 0.125*0.5*0.875.
+--Only meaningful if ore generation override is ENABLED, and does not apply to the start area.
+--Anti-biases must be between zero and one. Values outside this range will at best have no effect and at worst cause serious issues.
+Config.antiBias = {
+	["sulfur"] = 0.8,
+	["stone"] = 0.4 --this one is not recommended for a BobMods environment due to the greater need for stone, but helps in vanilla to deal with excessive amounts of it
+}
+
 --How much to flat-scale the distance gating (Ore Tier Distances)
 Config.oreTierDistanceFactor = 2--1
 
@@ -146,7 +159,7 @@ Config.spawnerScaling = true
 --Flat-rate spawner chance multiplier. Only meaningful if spawner generation override is ENABLED.
 Config.spawnerRateFactor = 1
 
---Should small (few-tile) ore patches (usually the result of ore deletion) be cleaned up? Only meaningful if ore generation override is DISABLED.
+--Should small (few-tile) ore patches (usually the result of ore deletion) be cleaned up? Only meaningful if ore generation override is DISABLED, as the override generation does not have this issue.
 Config.clearSmallPatches = true
 
 --These values (N1, N2) will make ore patches N times larger but 2N times rarer at the minimum and maximum distances. Intermediate distances are interpolated.
@@ -170,5 +183,7 @@ Config.retrogenOreDistance = -1
 Config.retrogenSpawnerDistance = -1
 
 --Should newly-built enemy bases have the distance (worm size, spawner type, etc) restrictions and distance scaling forcibly applied?
---Helpful if you have a nice clear ore patch then get a spitter nest plopped on it four hours into the game. No performance impact unless your biters are expanding more aggressively than AIs in a game of Civilization on Deity.
+--Helpful if you have a nice clear ore patch then get a spitter nest plopped on it four hours into the game.
+--No performance impact unless your biters are expanding more aggressively than AIs in a game of Civilization on the Deity difficulty (and if that is the case, you need a lot more than this to help you).
+--Does not affect already-built bases.
 Config.enforceSpawnerTieringForBuiltBases = true

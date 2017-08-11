@@ -106,7 +106,11 @@ function getOreForPlacementAt(dist)
 	if not global.oreverhaul.tierOresSum then error("Null ore table!") end
 	if not global.oreverhaul.tierOresSum["tier" .. maxtier] or #global.oreverhaul.tierOresSum["tier" .. maxtier] == 0 then error("No ores defined for tier " .. maxtier .. "!") end
 	
-	return getRandomTableEntry(global.oreverhaul.tierOresSum["tier" .. maxtier])
+	local ret = getRandomTableEntry(global.oreverhaul.tierOresSum["tier" .. maxtier])
+	if Config.antiBias[ret] and nextDouble() < Config.antiBias[ret] then
+		ret = getRandomTableEntry(global.oreverhaul.tierOresSum["tier" .. maxtier])
+	end
+	return ret
 end
 
 function getCondensationFactor(dist)

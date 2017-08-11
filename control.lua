@@ -145,13 +145,15 @@ script.on_event(defines.events.on_chunk_generated, function(event)
 end)
 
 script.on_event(defines.events.on_biter_base_built, function(event)
-	if Config.enforceSpawnerTieringForBuiltBases then
+	if Config.enforceSpawnerTieringForBuiltBases and (Config.redoSpawnerPlacement or Config.spawnerScaling) then
 		local base = event.entity
 		if base.type == "unit-spawner" then
 			modifySpawners(base)
+			return
 		end
 		if base.type == "turret" then
 			modifyWorms(base)
+			return
 		end
 	end
 end)
