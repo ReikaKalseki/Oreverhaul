@@ -82,7 +82,8 @@ end
 
 function getOreForPlacementAt(dist)
 	if dist <= core_distance then
-		return getRandomTableEntry(Config.starterOres)
+		--return getRandomTableEntry(Config.starterOres)
+		return getWeightedRandom(Config.starterOres)
 	end
 	local maxtier = getMaxOreTierAt(dist)
 	--local tier = "tier".. nextRangedInt(0, maxtier)

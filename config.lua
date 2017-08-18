@@ -73,12 +73,12 @@ Config.oreTiers = {
 	["uranium-ore"] = 5, --vanilla
 }
 
---Ores that MUST be present near the center.
+--Ores that MUST be present near the center. Numerical values are their relative weights (since not all are of equal need in the early game).
 Config.starterOres = {
-	"coal",
-	"iron-ore",
-	"copper-ore",
-	"stone"
+	["coal"] = 4,
+	["iron-ore"] = 6,
+	["copper-ore"] = 4,
+	["stone"] = 2,
 }
 
 --Ores unaffected by custom distribution; usually things that have their own gen code that should not be tampered with (eg biome specific, certain patterns, etc).
@@ -145,8 +145,8 @@ Config.oreRichnessScalingFactor = 2.5
 --A flat-rate multiplier for richness.
 Config.flatRichnessFactor = 1
 
---A flat-rate multiplier for ore patch chance per chunk.
---Higher means more ore patches (not recommended above base settings); lower means patches are rarer. Be careful in an environment with many ores, lest you make hunting for a specific ore type painful.
+--A flat-rate multiplier for ore patch chance per chunk. Higher means more ore patches (not recommended above base settings unless you have a world with little space for ore); lower means patches are rarer.
+--Be careful in an environment with many ores, lest you make hunting for a specific ore type painful.
 --Only meaningful if ore generation override is ENABLED.
 Config.orePatchChanceFactor = 1
 
@@ -185,5 +185,5 @@ Config.retrogenSpawnerDistance = -1
 --Should newly-built enemy bases have the distance (worm size, spawner type, etc) restrictions and distance scaling forcibly applied?
 --Helpful if you have a nice clear ore patch then get a spitter nest plopped on it four hours into the game.
 --No performance impact unless your biters are expanding more aggressively than AIs in a game of Civilization on the Deity difficulty (and if that is the case, you need a lot more than this to help you).
---Does not affect already-built bases.
+--Does not affect already-built bases, and tapers off as the evolution factor rises (100% effect at evo 0, 0% at evo 1)
 Config.enforceSpawnerTieringForBuiltBases = true

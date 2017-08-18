@@ -141,11 +141,15 @@ script.on_event(defines.events.on_tick, function(event)
 end)
 
 script.on_event(defines.events.on_chunk_generated, function(event)
+	if game.active_mods["rso-mod"] then
+		game.print("Oreverhaul: RSO Detected; the two mods cannot function together. Oreverhaul can do most everything RSO can, making RSO's presence unnecessary.")
+		return
+	end
 	controlChunk(event.surface, event.area, true, true)
 end)
 
 script.on_event(defines.events.on_biter_base_built, function(event)
-	if Config.enforceSpawnerTieringForBuiltBases and (Config.redoSpawnerPlacement or Config.spawnerScaling) then
+	if Config.enforceSpawnerTieringForBuiltBases and (Config.redoSpawnerPlacement or Config.spawnerScaling) and math.random() > event.entity.force.evolution_factor then
 		local base = event.entity
 		if base.type == "unit-spawner" then
 			modifySpawners(base)
