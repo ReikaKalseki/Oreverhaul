@@ -225,7 +225,7 @@ function getDistanceRichness(ore, x, y)
 	local ret = 0.25+getCosInterpolate(dd, maxd, platval)
 	--game.print(dd .. " >> " .. ret)
 	if ore == "crude-oil" or ore == "lithia-water" then
-		ret = math.min(ret/2, ore_plateau_value*Config.oreRichnessScalingFactor/4)
+		ret = math.min(ret, ore_plateau_value*Config.oreRichnessScalingFactor/2)
 	end
 	if ore == "ground-water" then
 		ret = math.min(0.5, (ret-0.025)/10)
