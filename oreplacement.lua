@@ -158,8 +158,10 @@ function testConsistency(x, y, val)
 end
 
 function tryCreateOrePatch(surface, chunk, x, y)
-	createSeed(surface, x, y)
-	local dd = math.sqrt(x*x+y*y)
+	local ex = x-Config.offsetX
+	local ey = y-Config.offsetY
+	createSeed(surface, ex, ey, Config.oreMixinSeed)
+	local dd = math.sqrt(ex*ex+ey*ey)
 	local cf = getCondensationFactor(dd)
 	local f = getOrePatchChance(dd)/(cf*2)--(cf*cf)
 	while f > 0 do --allows for >1 patch per chunk
@@ -194,13 +196,15 @@ function getOrePlopSize(dd)
 	return math.min(min_plop_size+(dd/120)*Config.oreSizeDistanceFactor, max_plop_size)
 end
 
-function getSpillSearchRadius(x, y, dd)
+function getSpillSearchRadius(dd)
 	return math.ceil((getCondensationFactor(dd)*1.5*(getOrePatchSize(dd)/4+getOrePlopSize(dd)))/CHUNK_SIZE)
 end
 
 function createSpillingOrePatches(surface, chunk, x, y)
-	local dd = math.sqrt(x*x+y*y)
-	local r = getSpillSearchRadius(x, y, dd)
+	local ex = x+Config.offsetX
+	local ey = y+Config.offsetY
+	local dd = math.sqrt(ex*ex+ey*ey)
+	local r = getSpillSearchRadius(dd)
 	--game.print(dd .. " >> " .. r)
 	--error(serpent.block("R " .. r))
 	for i = -r, r do

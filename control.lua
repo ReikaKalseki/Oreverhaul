@@ -5,6 +5,8 @@ require "config"
 local ore_debug = false
 local spawner_debug = false
 
+local ranTick = false
+
 function initGlobal(force)
 	if not global.oreverhaul then
 		global.oreverhaul = {}
@@ -104,7 +106,7 @@ end
 script.on_event(defines.events.on_tick, function(event)
 	initGlobal(false)
 	
-	if not global.oreverhaul.ranTick and (Config.retrogenOreDistance >= 0 or Config.retrogenSpawnerDistance >= 0) then
+	if not ranTick and (Config.retrogenOreDistance >= 0 or Config.retrogenSpawnerDistance >= 0) then
 		if Config.retrogenSpawnerDistance >= 0 then
 			game.forces["enemy"].kill_all_units()
 		end
@@ -129,9 +131,9 @@ script.on_event(defines.events.on_tick, function(event)
 				controlChunk(surface, area, (Config.retrogenOreDistance >= 0 and Config.retrogenOreDistance <= dist), (Config.retrogenSpawnerDistance >= 0 and Config.retrogenSpawnerDistance <= dist))
 			end
 		end
-		global.oreverhaul.ranTick = true
-		for _,force in game.forces do
-			force.player.rechart()
+		ranTick = true
+		for name,force in pairs(game.forces) do
+			force.rechart()
 		end
 		--game.print("Ran load code")
 	end

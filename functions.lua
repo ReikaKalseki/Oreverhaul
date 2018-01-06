@@ -173,6 +173,24 @@ function isInChunk(x, y, chunk)
 end
 
 function getOreAmount(ore, x, y)
+	local ret = getBaseOreAmount(ore, x, y)
+	
+	 --need to compensate for these, or the game becomes impossible quite easily; but do not completely negate the effects, keep the actual cost-per-resource net higher
+	 
+	 --TODO: MAKE CONFIGURABLE
+	if game.difficulty_settings.recipe_difficulty == defines.difficulty_settings.recipe_difficulty.expensive then
+		ret = math.ceil(ret*Config.expensiveRecipeMultiplier)
+	end
+	if game.difficulty_settings.technology_difficulty == defines.difficulty_settings.technology_difficulty.expensive then
+		ret = math.ceil(ret*Config.expensiveTechMultiplier)
+	end
+	local tf = game.difficulty_settings.technology_price_multiplier
+	ret = ret*(1+(tf-1)*Config.techCostMultiplierFactor)
+	
+	return ret
+end
+
+function getBaseOreAmount(ore, x, y)
 	if not Config.richnessScaling then
 		return 4000
 	end
@@ -250,8 +268,9 @@ function createSeed(surface, x, y) --Used by Minecraft MapGen
 end
 --]]
 
-function createSeed(surface, x, y) --Used by Minecraft MapGen
+function createSeed(surface, x, y, mixin) --Used by Minecraft MapGen
 	local seed = cantorCombine(surface.map_gen_settings.seed, cantorCombine(x, y))
+	seed = bit32.bxor(seed, mixin)
 	setRandSeed(seed)
 end
 

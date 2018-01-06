@@ -2,8 +2,8 @@ require "constants"
 require "config"
 
 function modifySpawners(spawner)
-	local dx = math.abs(spawner.position.x)
-	local dy = math.abs(spawner.position.y)
+	local dx = math.abs(spawner.position.x+Config.offsetX)
+	local dy = math.abs(spawner.position.y+Config.offsetX)
 	local dd = math.sqrt(dx*dx+dy*dy)
 	local f = getSpawnerProbability(dx, dy, dd, spawner)
 	--game.player.print("Spawner: " .. spawner.name .. " @ " .. dd .. ", f=" .. f)
@@ -14,7 +14,7 @@ function modifySpawners(spawner)
 			local f2 = getSpawnerReplacement(dx, dy, dd)
 			--game.player.print("Spawner: " .. spawner.name .. " @ " .. dd .. ", f2=" .. f2)
 			if nextDouble() < f2 then
-				replaceSpitterSpawner(dx, dy, dd, spawner)
+				replaceSpitterSpawner(spawner)
 			end
 		end
 	end
@@ -56,8 +56,8 @@ function downsizeWorm(worm)
 end
 
 function modifyWorms(worm)
-	local dx = math.abs(worm.position.x)
-	local dy = math.abs(worm.position.y)
+	local dx = math.abs(worm.position.x+Config.offsetX)
+	local dy = math.abs(worm.position.y+Config.offsetX)
 	local dd = math.sqrt(dx*dx+dy*dy)
 	local f = getWormProbability(dx, dy, dd, worm)
 	--game.player.print("worm: " .. worm.name .. " @ " .. dd .. ", f=" .. f)
@@ -94,9 +94,9 @@ function getSpawnerReplacement(dx, dy, dd)
 	end
 end
 
-function replaceSpitterSpawner(dx, dy, dd, spawner)
+function replaceSpitterSpawner(spawner)
 	spawner.surface.create_entity{name = "biter-spawner", direction = spawner.direction, position = {x = spawner.position.x,y = spawner.position.y}, force = spawner.force}
-	--game.player.print("Replacing spitter spawner @ " .. dx .. "," .. dy)
+	--game.player.print("Replacing spitter spawner @ " .. )
 	spawner.destroy()
 end
 
@@ -204,8 +204,10 @@ function createSpillingSpawnerPatches(surface, chunk, x, y)
 end
 
 function tryCreateSpawnerPatch(surface, chunk, x, y)
-	createSeed(surface, x, y)
-	local dd = math.sqrt(x*x+y*y)
+	local ex = x-Config.offsetX
+	local ey = y-Config.offsetY
+	createSeed(surface, ex, ey, Config.spawnerMixinSeed)
+	local dd = math.sqrt(ex*ex+ey*ey)
 	local f = getSpawnerPatchChance(dd)
 	--game.print(dd .. " >> " .. f)
 	if nextDouble() > f then
