@@ -3,12 +3,12 @@ Config = {} --ignore this line; technical
 --This is the configuration file for Oreverhaul, so used because the settings are too numerous and complex for the ingame setting system. To edit it, either extract the mod or use a program like WinRAR to edit it in situ.
 --Defaults are how I play; you are obviously free to change it as you please. Some "past attempted values" can be seen in multiset comments (eg "0.5--0.25--0.375--0.125"); feel free to try those.
 --Some values (such as ore plateau distance, some base chance values, etc) are defined in the "constants" file (in the same folder as this file);
---You can edit those too, but they are undocumented and were never designed for modification, so do so at your own risk.
+--You can edit those too, but they are undocumented and were never designed for modification, so do so at your own risk. There will be no guarantee of support for such modifications.
 
 --Generally, the idea is to 1) encourage exploration, as it yields better ore richness, 2) force trains during progression, as belting uranium 5000 tiles is idiotic, and 3) cause player-biter conflict due to the minimum spawner
 --generation distance (usually) being less than the minmum distance for many ores.
 
---It is recommended that you test a set of options by generating, charting, and examining, to a large distance, at least 6 or so maps before committing a playthrough with it.
+--It is recommended that you test a set of options by generating, charting, and examining, to a large distance, at least 6 or so maps before committing to a playthrough with it.
 
 --With Oreverhaul installed, all ore-/spawner-related map generation settings in the menu (size, frequency, richness) are entirely ignored except for water. This is for convenience, as this config is persistent between game
 --sessions, and those menu settings are not.
