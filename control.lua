@@ -20,16 +20,28 @@ function initGlobal(force)
 	if game and game.entity_prototypes and (force or global.oreverhaul.tierOresSum == nil or #global.oreverhaul.tierOresSum == 0) then
 		buildOreList()
 	end
+	
+	if game and game.active_mods then
+		global.oreverhaul.chokepoint_loaded = game.active_mods.ChokePoint ~= nil
+	end
 end
 
 initGlobal(true)
 
 script.on_init(function()
 	initGlobal(true)
+	initModifiers(true)
 end)
 
-script.on_configuration_changed(function()
-	initGlobal(true)
+script.on_load(function()
+	initModifiers(false)
+end)
+
+script.on_configuration_changed(function(data)
+	initGlobal(false)
+	if not game.is_multiplayer() and data.mod_changes.ChokePoint and data.mod_changes.ChokePoint.old_version == nil then --just added ChokePoint, AND SP, call init() once more
+		initChokepointModifiers(false)
+	end
 end)
 
 function controlChunk(surface, area, doOres, doSpawners)

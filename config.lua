@@ -35,7 +35,7 @@ Config = {} --ignore this line; technical
 --You can also set all tier distances to zero to effectively disable tiering.
 Config.oreTierDistances = {
 	tier0 = 0,
-	tier1 = 40,
+	tier1 = 25, --was 40
 	tier2 = 200,
 	tier3 = 500,
 	tier4 = 1000,
@@ -130,8 +130,8 @@ Config.oreMixinSeed = 16756750
 Config.spawnerMixinSeed = 1
 
 --Raw offsets for the entire oregen pattern, in case you have terrain you like "off center" but would like to move the ore or spawner patches to effectively move the starting area.
-Config.offsetX = -50
-Config.offsetY = 10
+Config.offsetX = 0
+Config.offsetY = 0
 
 --How much to flat-scale the distance gating (Ore Tier Distances)
 Config.oreTierDistanceFactor = 2--1

@@ -227,6 +227,7 @@ function getDistanceRichness(ore, x, y)
 	local dx = math.abs(x)
 	local dy = math.abs(y)
 	local dd = math.sqrt(dx*dx+dy*dy)
+	local core = dd < core_distance
 	if Config.richnessPerOre then
 		dd = math.max(0, dd-getMinGenerationDistance(ore))
 	end
@@ -252,6 +253,11 @@ function getDistanceRichness(ore, x, y)
 	--if dd > 5000 then
 		--ret = math.max(ret, math.min(ret, ret*(1.001^-((x*x)+(y*y)))))
 	--end
+	
+	if core then
+		ret = ret*center_richness_factor
+	end
+	
 	return ret*Config.flatRichnessFactor
 end
 
