@@ -36,7 +36,7 @@ local function createOrePatch(orename, surface, chunk, x, y, totalSize, plopSize
 end
 
 local function createLiquidPatch(orename, surface, chunk, x, y, wells)
-	local r = 6
+	local r = wells > 12 and 10 or 6
 	local ox = getRandPM(CHUNK_SIZE/4) --is already in the center of the chunk
 	local oy = getRandPM(CHUNK_SIZE/4)
 	for i = 1, wells do
@@ -171,7 +171,7 @@ function tryCreateOrePatch(surface, chunk, x, y)
 		end
 		local ore = getOreForPlacementAt(dd)
 		if isLiquid(ore) then
-			local num = math.min(2+dd/60, 12)*(1+(cf-1)/2)
+			local num = math.min(2+dd/50, 24)*(1+(cf-1)/2)
 			createLiquidPatch(ore, surface, chunk, x, y, num)
 		else
 			local size = getOrePatchSize(dd)*cf
