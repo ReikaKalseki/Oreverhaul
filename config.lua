@@ -181,9 +181,6 @@ Config.orePatchCondensationEnd = 2--3
 --If true, each ore starts its richness curve "fresh" from when it first appears. So if ore A appears at distance X and B at distance Y, the richnesses would be equal at N blocks from X or Y respectively.
 Config.richnessPerOre = false
 
---Enable behemoth (green) worms? The worm counterpart to the green biters. Generates at extreme distances to guard supersized ore veins. Can destroy a car in one hit, and an unshielded tank in two. Approach with extreme caution.
-Config.enableHugeWorms = true
-
 --Should spawners be made more durable? This helps discourage clearing large swathes of land of biters, encouraging more defences rather than just "kill everything on the map". Not strictly worldgen, but does dovetail with it.
 Config.nestHealthFactor = 10
 

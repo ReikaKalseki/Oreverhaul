@@ -3,6 +3,9 @@ require "oreplacement"
 require "spawnercontrol"
 require "customrand"
 require "constants"
+
+require "__DragonIndustries__.mathhelper"
+require "__DragonIndustries__.arrays"
 --[[
 function cacheChunkOre(chunkloc, ore, amount, x, y)
 	if chunkCache[chunkloc.keystring] == nil then
@@ -41,12 +44,7 @@ function genCachedChunk(surface, chunkloc)
 end
 --]]
 function buildWormList()
-	global.oreverhaul.availableWorms = {"small-worm-turret", "medium-worm-turret", "big-worm-turret"}
-	
-	if game.entity_prototypes["behemoth-worm-turret"] then
-		table.insert(global.oreverhaul.availableWorms, "behemoth-worm-turret")
-		--game.print("Loaded extra worms: N=" .. #global.oreverhaul.availableWorms)
-	end
+	global.oreverhaul.availableWorms = {"small-worm-turret", "medium-worm-turret", "big-worm-turret, behemoth-worm-turret"}
 end
 
 function buildOreList()
@@ -135,14 +133,6 @@ function fillLowerTier(tier)
 			--game.print("Oreverhaul: Copying " .. ore .. " from tier " .. tiermin .. " to tier " .. i)
 		end
 	end
-end
-
-function getCosInterpolate(x, xmax, ymax)
-	if x >= xmax then
-		return ymax
-	end
-	local func = 0.5-0.5*math.cos(x*math.pi/xmax)
-	return func*ymax
 end
 
 function getRandPM(range)
@@ -280,59 +270,6 @@ function createSeed(surface, x, y, mixin) --Used by Minecraft MapGen
 	setRandSeed(seed)
 end
 
-function getRandomTableEntry(value)
-	local size = getTableSize(value)
-	local idx = nextRangedInt(0, size-1)
-	--game.print(idx .. "/" .. size)
-	local i = 0
-	for key,val in pairs(value) do
-		--game.print(i .. " >> " .. val)
-		if i == idx then
-			--game.print(val)
-			return val
-		end
-		i = i+1
-	end
-end
-
-function getWeightedRandom(values)
-	local sum = 0
-	for idx,num in pairs(values) do
-		sum = sum+num
-	end
-	local rand = nextRangedInt(0, sum)
-	local val = 0
-	for key,num in pairs(values) do
-		val = val+num
-		if val >= rand then
-			return key
-		end
-	end
-	return 0
-end
-
-function getTableSize(val)
-	local count = 0
-	for key,num in pairs(val) do
-		count = count+1
-	end
-	return count
-end
-
-function cantorCombine(a, b)
-	--a = (a+1024)%16384
-	--b = b%16384
-	local k1 = a*2
-	local k2 = b*2
-	if a < 0 then
-		k1 = a*-2-1
-	end
-	if b < 0 then
-		k2 = b*-2-1
-	end
-	return 0.5*(k1 + k2)*(k1 + k2 + 1) + k2
-end
-
 function getValidOresAt(dx, dy, dd)
 	local ores = {}
 	for ore,dist in pairs(ORE_DIST) do
@@ -358,7 +295,7 @@ function getReplacedOre(ore)
 	return orenames[getWeightedRandom(ore_count)]
 	-]]
 	valid = getValidOresAt(math.abs(x), math.abs(y), math.sqrt(x*x+y*y))
-	return getWeightedRandom(valid)
+	return getCustomWeightedRandom(valid, nextRangedInt)
 end
 
 function getOreSpecificBias(dd, ore)

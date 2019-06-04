@@ -83,7 +83,7 @@ end
 function getOreForPlacementAt(dist)
 	if dist <= core_distance then
 		--return getRandomTableEntry(Config.starterOres)
-		return getWeightedRandom(Config.starterOres)
+		return getCustomWeightedRandom(Config.starterOres, nextRangedInt)
 	end
 	local maxtier = getMaxOreTierAt(dist)
 	--local tier = "tier".. nextRangedInt(0, maxtier)
@@ -107,9 +107,9 @@ function getOreForPlacementAt(dist)
 	if not global.oreverhaul.tierOresSum then error("Null ore table!") end
 	if not global.oreverhaul.tierOresSum["tier" .. maxtier] or #global.oreverhaul.tierOresSum["tier" .. maxtier] == 0 then error("No ores defined for tier " .. maxtier .. "!") end
 	
-	local ret = getRandomTableEntry(global.oreverhaul.tierOresSum["tier" .. maxtier])
+	local ret = getRandomTableEntry(global.oreverhaul.tierOresSum["tier" .. maxtier], nextRangedInt)
 	if Config.antiBias[ret] and nextDouble() < Config.antiBias[ret] then
-		ret = getRandomTableEntry(global.oreverhaul.tierOresSum["tier" .. maxtier])
+		ret = getRandomTableEntry(global.oreverhaul.tierOresSum["tier" .. maxtier], nextRangedInt)
 	end
 	return ret
 end
