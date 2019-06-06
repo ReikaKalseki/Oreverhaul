@@ -65,20 +65,25 @@ function controlChunk(surface, area, doOres, doSpawners)
 						end
 						ore.destroy()
 					else
-						ore.amount = math.floor(ore.amount * mult)
-						
-						--game.player.print("Generated " .. ore.amount .. " of ore " .. ore.name .. ", multiply by " .. mult)
-						if ore_debug then
-							if totals[ore.name] == nil then
-								totals[ore.name] = 0
-								newtotals[ore.name] = 0
-								mults[ore.name] = 0
-								counts[ore.name] = 0
+						local amt = math.min(4000000000, math.floor(ore.amount * mult))
+						if amt <= 0 then
+							ore.destroy()
+						else
+							ore.amount = amt
+							
+							--game.player.print("Generated " .. ore.amount .. " of ore " .. ore.name .. ", multiply by " .. mult)
+							if ore_debug then
+								if totals[ore.name] == nil then
+									totals[ore.name] = 0
+									newtotals[ore.name] = 0
+									mults[ore.name] = 0
+									counts[ore.name] = 0
+								end
+								totals[ore.name] = totals[ore.name] + ore.amount
+								mults[ore.name] = mults[ore.name] + mult
+								counts[ore.name] = counts[ore.name] + 1
+								newtotals[ore.name] = newtotals[ore.name] + ore.amount
 							end
-							totals[ore.name] = totals[ore.name] + ore.amount
-							mults[ore.name] = mults[ore.name] + mult
-							counts[ore.name] = counts[ore.name] + 1
-							newtotals[ore.name] = newtotals[ore.name] + ore.amount
 						end
 					end
 				end

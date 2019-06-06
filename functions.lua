@@ -193,7 +193,8 @@ function getMultiply(area, ore)
 	local dd = math.sqrt(dx*dx+dy*dy)
 	local mind = getMinGenerationDistance(ore)
 	--game.print(ore.name .. " @ " .. dd .. "/" .. mind)
-	if Config.distanceGate[ore.name] ~= nil and dd < mind then
+	local tier = Config.oreTiers[ore.name]
+	if tier and Config.oreTierDistances["tier"..tier] > dd then
 		--game.print("Too close: " .. ore.name .. " @ " .. dd .. "/" .. mind)
 		return 0
 	end
@@ -209,7 +210,7 @@ function getMultiply(area, ore)
 	--local root = math.max(0, (math.max(0, dx*dx-off*off-pre*pre))+(math.max(0, dy*dy-off*off-pre*pre)))
 	--local ret = 0.1+(math.sqrt(root)/dist_factor)
 	
-	local ret = getDistanceRichness(ore.position.x, ore.position.y)
+	local ret = getDistanceRichness(ore.name, ore.position.x, ore.position.y)
 	return ret
 end
 

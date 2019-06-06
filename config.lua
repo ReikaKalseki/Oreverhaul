@@ -18,6 +18,7 @@ Config = {} --ignore this line; technical
 
 --Oreverhaul ore patches are usually composed of multiple "circles" of ore, which are immediately visually different from the noise-gen-based more..."angular" shapes of vanilla Factorio.
 --This is normal, and their only gameplay influence is slightly more convenient mining drill placement, something I consider desirable.
+--NOTE FOR 0.17 AND ONWARDS: As of 0.17, vanilla Factorio ore gen is more blotchy and much more like Oreverhaul patch styling, which means that this, while still true, is not as much a significant difference as it once was.
 
 --For reference, the general algorithm is one of interpolation between a "starter area" state and a "plateau" (max distance) state, with each state having preset ore patch chance, per-tile richness, and overall average size.
 --There is no concept of "generate N units of ore per chunk", "ensure minimum distance of X between ore patches", or "generate ore A near ore B", so no such settings exist and that effect cannot be directly attempted.
@@ -71,6 +72,7 @@ Config.oreTiers = {
 	["uraninite"] = 5, --not really relevant anymore as of 0.15, unless UraniumPower still exists(?)
 	["fluorite"] = 5, --not really relevant anymore as of 0.15, unless UraniumPower still exists(?)
 	["uranium-ore"] = 5, --vanilla
+	["thorium-ore"] = 5, --vanilla
 }
 
 --Ores that MUST be present near the center. Numerical values are their relative weights (since not all are of equal need in the early game).
@@ -87,8 +89,8 @@ Config.ignoredOres = {
 }
 
 --Should a custom ore/spawner placement algorithm be used? This helps clean up the otherwise messy and often balance-unfriendly generation. Many settings have no effect if this is disabled.
-Config.redoOrePlacement = true
-Config.redoSpawnerPlacement = true
+Config.redoOrePlacement = false
+Config.redoSpawnerPlacement = false
 
 --Should richness scaling be enabled? If not, richness is flat across the map.
 Config.richnessScaling = true
