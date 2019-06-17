@@ -44,7 +44,7 @@ function genCachedChunk(surface, chunkloc)
 end
 --]]
 function buildWormList()
-	global.oreverhaul.availableWorms = {"small-worm-turret", "medium-worm-turret", "big-worm-turret, behemoth-worm-turret"}
+	global.oreverhaul.availableWorms = {"small-worm-turret", "medium-worm-turret", "big-worm-turret", "behemoth-worm-turret"}
 end
 
 function buildOreList()

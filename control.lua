@@ -58,7 +58,7 @@ function controlChunk(surface, area, doOres, doSpawners)
 				if Config.redoOrePlacement then
 					ore.destroy()
 				else
-					local mult = getMultiply(area, ore)
+					local mult = getMultiply(area, ore)/6
 					if mult == nil or mult <= 0 then
 						if ore_debug then
 							--game.player.print("Destroyed " .. ore.name .. " @ " .. ore.position.x .. "," .. ore.position.y)

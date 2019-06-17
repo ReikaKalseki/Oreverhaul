@@ -88,7 +88,10 @@ Config.ignoredOres = {
 	"geothermal"
 }
 
---Should a custom ore/spawner placement algorithm be used? This helps clean up the otherwise messy and often balance-unfriendly generation. Many settings have no effect if this is disabled.
+--Should a custom ore/spawner placement algorithm be used, instead of just deleting/modifying preplaced ore tiles?
+--This helps clean up the otherwise messy (eg removing one half of an ore patch due to it lying on a tier boundary) and often balance-unfriendly generation.
+--Additionally, vanilla ore gen does not have rules like "bigger patches further out", so that sort of mechanic will not apply with this disabled.
+--Many settings have no effect if this is disabled.
 Config.redoOrePlacement = false
 Config.redoSpawnerPlacement = false
 
