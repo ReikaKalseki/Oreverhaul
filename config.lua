@@ -92,8 +92,8 @@ Config.ignoredOres = {
 --This helps clean up the otherwise messy (eg removing one half of an ore patch due to it lying on a tier boundary) and often balance-unfriendly generation.
 --Additionally, vanilla ore gen does not have rules like "bigger patches further out", so that sort of mechanic will not apply with this disabled.
 --Many settings have no effect if this is disabled.
-Config.redoOrePlacement = false
-Config.redoSpawnerPlacement = false
+Config.redoOrePlacement = true
+Config.redoSpawnerPlacement = true
 
 --Should richness scaling be enabled? If not, richness is flat across the map.
 Config.richnessScaling = true
