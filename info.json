@@ -4,7 +4,7 @@
   "title": "Oreverhaul",
   "author": "Reika",
   "homepage": "",
-  "factorio_version" : "0.17",
+  "factorio_version" : "0.18",
   "dependencies": ["base", "DragonIndustries"],
   "description": "Overhauls ore gen to increase density at larger distances, but forces some resources to only generate further out. Fully configurable."
 }
