@@ -62,7 +62,7 @@ Config.oreTiers = {
 	["crude-oil"] = 2, --vanilla, fluid
 	["lithia-water"] = 2, --fluid
 	["zinc-ore"] = 2,
-	--["sulfur"] = 2, --not usually enabled in game
+	["sulfur"] = 2, --not usually enabled in game
 	["cobalt-ore"] = 3, --not usually enabled in source mod
 	["bauxite-ore"] = 3, --alumin(i)um
 	["gold-ore"] = 3,
@@ -126,13 +126,14 @@ Config.radiusFactors = {
 --Anti-biases must be between zero and one. Values outside this range will at best have no effect and at worst cause serious issues.
 Config.antiBias = {
 	["sulfur"] = 0.8,
-	["stone"] = 0.2 --this one is not recommended for a BobMods environment (at least not as the 0.4 default) due to the greater need for stone, but helps in vanilla to deal with excessive amounts of it
+	["stone"] = 0.25, --this one is not recommended for a BobMods environment (at least not as the 0.4 default) due to the greater need for stone, but helps in vanilla to deal with excessive amounts of it
+	["copper"] = 0.08
 }
 
 
 --These values are mixed into the world seed for ore/spawner generation, so you can keep terrain/biome/etc while choosing a new ore/spawner distribution. Mixins of 0 have no effect.
-Config.oreMixinSeed = 16756750
-Config.spawnerMixinSeed = 1
+Config.oreMixinSeed = 42786--8735--7634--14172
+Config.spawnerMixinSeed = 1134
 
 --Raw offsets for the entire oregen pattern, in case you have terrain you like "off center" but would like to move the ore or spawner patches to effectively move the starting area.
 Config.offsetX = 0
@@ -142,7 +143,7 @@ Config.offsetY = 0
 Config.oreTierDistanceFactor = 2--1
 
 --A base scaling for the distance-richness curve. At 2, you need to travel 2x as far for the same richness boost.
-Config.oreRichnessDistanceFactor = 1
+Config.oreRichnessDistanceFactor = 0.8
 
 --How much to flat-scale the distance gating (Ore Tier Distances) AND richness curve. Basically the above two options combined.
 Config.oreDistanceFactor = 1
@@ -151,7 +152,7 @@ Config.oreDistanceFactor = 1
 Config.oreSizeDistanceFactor = 1
 
 --Like the above, but for spawners (base size, worm tier, etc)
-Config.spawnerDistanceFactor = 0.9--1.25--0.75--0.5--1
+Config.spawnerDistanceFactor = 0.7--1.25--0.75--0.5--1
 
 --A multiplier for the base rate of richness scaling.
 Config.oreRichnessScalingFactor = 2.5
@@ -162,7 +163,7 @@ Config.flatRichnessFactor = 1
 --A flat-rate multiplier for ore patch chance per chunk. Higher means more ore patches (not recommended above base settings unless you have a world with little space for ore); lower means patches are rarer.
 --Be careful in an environment with many ores, lest you make hunting for a specific ore type painful.
 --Only meaningful if ore generation override is ENABLED.
-Config.orePatchChanceFactor = 1.25--1
+Config.orePatchChanceFactor = 0.9--1.25--1
 
 --Does the richness plateau at an internally calculated distance, or does it keep growing forever? Note that this can create ore patches with billions of ore if set to false.
 Config.plateauRichness = false
@@ -171,7 +172,7 @@ Config.plateauRichness = false
 Config.spawnerScaling = true
 
 --Flat-rate spawner chance multiplier. Only meaningful if spawner generation override is ENABLED.
-Config.spawnerRateFactor = 1
+Config.spawnerRateFactor = 1.25
 
 --Should small (few-tile) ore patches (usually the result of ore deletion) be cleaned up? Only meaningful if ore generation override is DISABLED, as the override generation does not have this issue.
 Config.clearSmallPatches = true
@@ -179,12 +180,12 @@ Config.clearSmallPatches = true
 --These values (N1, N2) will make ore patches N times larger but 2N times rarer at the minimum and maximum distances. Intermediate distances are interpolated.
 --Only meaningful if ore generation override is ENABLED.	
 --Be warned that excessive patch size (above ~3.2) will cause ore patch cutoffs, as the ore patches become greater than 3x3 chunks in size, and the generation algorithm, for performance reasons, does not model a 5x5 chunk area.
-Config.orePatchCondensationStart = 1
+Config.orePatchCondensationStart = 1.4
 Config.orePatchCondensationEnd = 2--3
 
 --If false, richness is a global parameter shared by all ores, so at the same distance, explicit multipliers notwithstanding, iron, tin, gold, and uranium and so on will have the same richness.
 --If true, each ore starts its richness curve "fresh" from when it first appears. So if ore A appears at distance X and B at distance Y, the richnesses would be equal at N blocks from X or Y respectively.
-Config.richnessPerOre = false
+Config.richnessPerOre = true
 
 --Should spawners be made more durable? This helps discourage clearing large swathes of land of biters, encouraging more defences rather than just "kill everything on the map". Not strictly worldgen, but does dovetail with it.
 Config.nestHealthFactor = 10
