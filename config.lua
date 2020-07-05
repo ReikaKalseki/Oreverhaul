@@ -10,22 +10,20 @@ Config = {} --ignore this line; technical
 
 --It is recommended that you test a set of options by generating, charting, and examining, to a large distance, at least 6 or so maps before committing to a playthrough with it.
 
---With Oreverhaul installed, all ore-/spawner-related map generation settings in the menu (size, frequency, richness) are entirely ignored except for water. This is for convenience, as this config is persistent between game
---sessions, and those menu settings are not.
+--With Oreverhaul installed, all ore-/spawner-related map generation settings in the menu (size, frequency, richness) are entirely ignored except for water, trees, cliffs, and biomes. This is for convenience, as this config is --persistent between game sessions, and those menu settings are not.
 
 --Oreverhaul should be able to do everything RSO can, and more; it was originally written for personal use when RSO proved insufficient:
 -- https://www.reddit.com/r/factorio/comments/58otsk/help_with_rso_in_a_manyore_environment_and_with/
 
 --Oreverhaul ore patches are usually composed of multiple "circles" of ore, which are immediately visually different from the noise-gen-based more..."angular" shapes of vanilla Factorio.
 --This is normal, and their only gameplay influence is slightly more convenient mining drill placement, something I consider desirable.
---NOTE FOR 0.17 AND ONWARDS: As of 0.17, vanilla Factorio ore gen is more blotchy and much more like Oreverhaul patch styling, which means that this, while still true, is not as much a significant difference as it once was.
+--NOTE FOR 0.17 AND ONWARDS: As of 0.17, vanilla Factorio ore gen is more blotchy and much more like Oreverhaul patch styling, which means that this, while still true, is not as much a significant difference as it once was. --The placement of ores is also more like RSO/Oreverhaul defaults in terms of large, well-separated patches, and with some amount of distance tiering (eg no oil in starting area). However, Oreverhaul continues to offer far --more flexibility.
 
 --For reference, the general algorithm is one of interpolation between a "starter area" state and a "plateau" (max distance) state, with each state having preset ore patch chance, per-tile richness, and overall average size.
 --There is no concept of "generate N units of ore per chunk", "ensure minimum distance of X between ore patches", or "generate ore A near ore B", so no such settings exist and that effect cannot be directly attempted.
 --Indeed, most programmers will recognize the inherent difficulty of implementation of what may seem simple conceptually.
 
---If you have mods that make biters substantially more difficult - either directly, or by mechanics like faster evolution (eg NauvisDay mod) - it is suggested, though not required, that you also include a combat-boosting mod,
---such as EndgameCombat. You may otherwise find yourself, map generation depending, forced to take down a biter base full of medium biters with nothing better than low-tier grenades, an endeavour which usually proves lethal.
+--If you have mods that make biters substantially more difficult - either directly, or by mechanics like faster evolution (eg NaturalEvolution, or my NauvisDay mod) - it is suggested, though not required, that you also include --a combat-boosting mod, such as EndgameCombat. You may otherwise find yourself, map generation depending, forced to take down a biter base full of medium biters with nothing better than low-tier grenades, an endeavour which --usually proves lethal.
 
 
 --#################################################################################################################
@@ -37,8 +35,8 @@ Config = {} --ignore this line; technical
 Config.oreTierDistances = {
 	tier0 = 0,
 	tier1 = 25, --was 40
-	tier2 = 200,
-	tier3 = 500,
+	tier2 = 300,
+	tier3 = 600,
 	tier4 = 1000,
 	tier5 = 2000
 }
@@ -127,23 +125,22 @@ Config.radiusFactors = {
 Config.antiBias = {
 	["sulfur"] = 0.8,
 	["stone"] = 0.25, --this one is not recommended for a BobMods environment (at least not as the 0.4 default) due to the greater need for stone, but helps in vanilla to deal with excessive amounts of it
-	["copper"] = 0.08
 }
 
 
 --These values are mixed into the world seed for ore/spawner generation, so you can keep terrain/biome/etc while choosing a new ore/spawner distribution. Mixins of 0 have no effect.
-Config.oreMixinSeed = 42786--8735--7634--14172
-Config.spawnerMixinSeed = 1134
+Config.oreMixinSeed = 4666314--8934--98746--0--42786--8735--7634--14172
+Config.spawnerMixinSeed = 0--1134
 
 --Raw offsets for the entire oregen pattern, in case you have terrain you like "off center" but would like to move the ore or spawner patches to effectively move the starting area.
 Config.offsetX = 0
 Config.offsetY = 0
 
 --How much to flat-scale the distance gating (Ore Tier Distances)
-Config.oreTierDistanceFactor = 2--1
+Config.oreTierDistanceFactor = 1.5--2--1
 
 --A base scaling for the distance-richness curve. At 2, you need to travel 2x as far for the same richness boost.
-Config.oreRichnessDistanceFactor = 0.8
+Config.oreRichnessDistanceFactor = 0.75
 
 --How much to flat-scale the distance gating (Ore Tier Distances) AND richness curve. Basically the above two options combined.
 Config.oreDistanceFactor = 1
@@ -152,7 +149,10 @@ Config.oreDistanceFactor = 1
 Config.oreSizeDistanceFactor = 1
 
 --Like the above, but for spawners (base size, worm tier, etc)
-Config.spawnerDistanceFactor = 0.7--1.25--0.75--0.5--1
+Config.spawnerDistanceFactor = 0.8--0.9375--0.7--1.25--0.75--0.5--1
+
+--How close the innermost spawners can be. Unaffected by the scaling factors.
+Config.minSpawnerDistance = 300
 
 --A multiplier for the base rate of richness scaling.
 Config.oreRichnessScalingFactor = 2.5
@@ -163,7 +163,7 @@ Config.flatRichnessFactor = 1
 --A flat-rate multiplier for ore patch chance per chunk. Higher means more ore patches (not recommended above base settings unless you have a world with little space for ore); lower means patches are rarer.
 --Be careful in an environment with many ores, lest you make hunting for a specific ore type painful.
 --Only meaningful if ore generation override is ENABLED.
-Config.orePatchChanceFactor = 0.9--1.25--1
+Config.orePatchChanceFactor = 0.8--1.25--1
 
 --Does the richness plateau at an internally calculated distance, or does it keep growing forever? Note that this can create ore patches with billions of ore if set to false.
 Config.plateauRichness = false
@@ -172,7 +172,7 @@ Config.plateauRichness = false
 Config.spawnerScaling = true
 
 --Flat-rate spawner chance multiplier. Only meaningful if spawner generation override is ENABLED.
-Config.spawnerRateFactor = 1.25
+Config.spawnerRateFactor = 0.875--1.25
 
 --Should small (few-tile) ore patches (usually the result of ore deletion) be cleaned up? Only meaningful if ore generation override is DISABLED, as the override generation does not have this issue.
 Config.clearSmallPatches = true
@@ -192,7 +192,7 @@ Config.nestHealthFactor = 10
 
 --Should retrogeneration be enabled, and if so, at what minimum radius from the center? A value of "-1" Disables it entirely; >= 0 enables it with that minimum distance. May not be MP compatible. Obviously causes lag spikes.
 Config.retrogenOreDistance = -1
-Config.retrogenSpawnerDistance = -1
+Config.retrogenSpawnerDistance = -1--600
 
 --Should newly-built enemy bases have the distance (worm size, spawner type, etc) restrictions and distance scaling forcibly applied?
 --Helpful if you have a nice clear ore patch then get a spitter nest plopped on it four hours into the game.

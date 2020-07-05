@@ -4,7 +4,7 @@ require "config"
 function modifySpawners(spawner)
 	local dx = math.abs(spawner.position.x+Config.offsetX)
 	local dy = math.abs(spawner.position.y+Config.offsetX)
-	local dd = math.sqrt(dx*dx+dy*dy)
+	local dd = math.sqrt(dx*dx+dy*dy)/Config.spawnerDistanceFactor
 	local f = getSpawnerProbability(dx, dy, dd, spawner)
 	--game.player.print("Spawner: " .. spawner.name .. " @ " .. dd .. ", f=" .. f)
 	if nextDouble() > f then
@@ -58,7 +58,7 @@ end
 function modifyWorms(worm)
 	local dx = math.abs(worm.position.x+Config.offsetX)
 	local dy = math.abs(worm.position.y+Config.offsetX)
-	local dd = math.sqrt(dx*dx+dy*dy)
+	local dd = math.sqrt(dx*dx+dy*dy)/Config.spawnerDistanceFactor
 	local f = getWormProbability(dx, dy, dd, worm)
 	--game.player.print("worm: " .. worm.name .. " @ " .. dd .. ", f=" .. f)
 	local r = nextDouble()
@@ -207,7 +207,7 @@ function tryCreateSpawnerPatch(surface, chunk, x, y)
 	local ex = x-Config.offsetX
 	local ey = y-Config.offsetY
 	createSeed(surface, ex, ey, Config.spawnerMixinSeed)
-	local dd = math.sqrt(ex*ex+ey*ey)
+	local dd = math.sqrt(ex*ex+ey*ey)/Config.spawnerDistanceFactor
 	local f = getSpawnerPatchChance(dd)
 	--game.print(dd .. " >> " .. f)
 	if nextDouble() > f then
@@ -217,13 +217,14 @@ function tryCreateSpawnerPatch(surface, chunk, x, y)
 end
 
 function getSpawnerPatchChance(dist)
-	if dist < min_spawner_dist then
+	local mind = math.min(min_spawner_dist, Config.minSpawnerDistance)*Config.spawnerDistanceFactor
+	if dist < mind then
 		return 0
 	end
 	if dist < core_distance then
 		return 0
 	end
-	local ret = min_spawner_chance+getCosInterpolate(dist-min_spawner_dist, full_spawn_dist, full_spawn_amount-min_spawner_chance)
+	local ret = min_spawner_chance+getCosInterpolate(dist-mind, full_spawn_dist, full_spawn_amount-min_spawner_chance)
 	return ret
 end
 
