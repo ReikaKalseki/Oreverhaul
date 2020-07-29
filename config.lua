@@ -124,12 +124,12 @@ Config.radiusFactors = {
 --Anti-biases must be between zero and one. Values outside this range will at best have no effect and at worst cause serious issues.
 Config.antiBias = {
 	["sulfur"] = 0.8,
-	["stone"] = 0.25, --this one is not recommended for a BobMods environment (at least not as the 0.4 default) due to the greater need for stone, but helps in vanilla to deal with excessive amounts of it
+	["stone"] = 0.5, --this one is not recommended for a BobMods environment (at least not as the 0.4 default) due to the greater need for stone, but helps in vanilla to deal with excessive amounts of it
 }
 
 
 --These values are mixed into the world seed for ore/spawner generation, so you can keep terrain/biome/etc while choosing a new ore/spawner distribution. Mixins of 0 have no effect.
-Config.oreMixinSeed = 4666314--8934--98746--0--42786--8735--7634--14172
+Config.oreMixinSeed = 345
 Config.spawnerMixinSeed = 0--1134
 
 --Raw offsets for the entire oregen pattern, in case you have terrain you like "off center" but would like to move the ore or spawner patches to effectively move the starting area.
@@ -137,33 +137,33 @@ Config.offsetX = 0
 Config.offsetY = 0
 
 --How much to flat-scale the distance gating (Ore Tier Distances)
-Config.oreTierDistanceFactor = 1.5--2--1
+Config.oreTierDistanceFactor = 1.4--2--1
 
 --A base scaling for the distance-richness curve. At 2, you need to travel 2x as far for the same richness boost.
-Config.oreRichnessDistanceFactor = 0.75
+Config.oreRichnessDistanceFactor = 0.5
 
 --How much to flat-scale the distance gating (Ore Tier Distances) AND richness curve. Basically the above two options combined.
 Config.oreDistanceFactor = 1
 
 --How much to flat-scale the ore patch size distance scaling. Values larger than one "compress" the scaling, values less than one (but more than zero) expand it, all by that corresponding factor.
-Config.oreSizeDistanceFactor = 1
+Config.oreSizeDistanceFactor = 1.6
 
 --Like the above, but for spawners (base size, worm tier, etc)
-Config.spawnerDistanceFactor = 0.8--0.9375--0.7--1.25--0.75--0.5--1
+Config.spawnerDistanceFactor = 1
 
 --How close the innermost spawners can be. Unaffected by the scaling factors.
-Config.minSpawnerDistance = 300
+Config.minSpawnerDistance = 600
 
 --A multiplier for the base rate of richness scaling.
 Config.oreRichnessScalingFactor = 2.5
 
 --A flat-rate multiplier for richness.
-Config.flatRichnessFactor = 1
+Config.flatRichnessFactor = 1.25
 
 --A flat-rate multiplier for ore patch chance per chunk. Higher means more ore patches (not recommended above base settings unless you have a world with little space for ore); lower means patches are rarer.
 --Be careful in an environment with many ores, lest you make hunting for a specific ore type painful.
 --Only meaningful if ore generation override is ENABLED.
-Config.orePatchChanceFactor = 0.8--1.25--1
+Config.orePatchChanceFactor = 0.3
 
 --Does the richness plateau at an internally calculated distance, or does it keep growing forever? Note that this can create ore patches with billions of ore if set to false.
 Config.plateauRichness = false
@@ -172,7 +172,10 @@ Config.plateauRichness = false
 Config.spawnerScaling = true
 
 --Flat-rate spawner chance multiplier. Only meaningful if spawner generation override is ENABLED.
-Config.spawnerRateFactor = 0.875--1.25
+Config.spawnerRateFactor = 0.75
+
+--Spawner clustering, aka how much (relative to default) spawners should allow themselves to generate in "nests" of many spawners as opposed to isolated. Only meaningful if spawner generation override is ENABLED.
+Config.spawnerClustering = 1.4
 
 --Should small (few-tile) ore patches (usually the result of ore deletion) be cleaned up? Only meaningful if ore generation override is DISABLED, as the override generation does not have this issue.
 Config.clearSmallPatches = true
@@ -193,6 +196,9 @@ Config.nestHealthFactor = 10
 --Should retrogeneration be enabled, and if so, at what minimum radius from the center? A value of "-1" Disables it entirely; >= 0 enables it with that minimum distance. May not be MP compatible. Obviously causes lag spikes.
 Config.retrogenOreDistance = -1
 Config.retrogenSpawnerDistance = -1--600
+
+--Which ores to retrogen, if the ore retrogen is enabled. Make empty for "all".
+Config.retrogenOreSet = {"crude-oil"}
 
 --Should newly-built enemy bases have the distance (worm size, spawner type, etc) restrictions and distance scaling forcibly applied?
 --Helpful if you have a nice clear ore patch then get a spitter nest plopped on it four hours into the game.

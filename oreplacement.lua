@@ -4,7 +4,9 @@ require "config"
 function createResource(orename, surface, chunk, dx, dy, dr, drm)
 	if isInChunk(dx, dy, chunk) and canPlaceOreAt(surface, orename, dx, dy) then
 		local f = 1-0.5*(dr/(drm*drm))
-		local amt = math.floor(f*getOreAmount(orename, dx, dy))
+		local baseamt = getOreAmount(orename, dx, dy)
+		local amt = math.floor(f*baseamt)
+		--log(dr .. " = " .. f .. " x " .. baseamt)
 		surface.create_entity{name = orename, position = {x = dx, y = dy}, force = game.forces.neutral, amount = amt}
 	end
 end

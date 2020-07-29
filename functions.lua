@@ -224,12 +224,8 @@ function getDistanceRichness(ore, x, y)
 	end
 	local maxd = ore_plateau*Config.oreDistanceFactor*Config.oreRichnessDistanceFactor
 	local platval = ore_plateau_value*Config.oreRichnessScalingFactor
-	if dd >= maxd then
-		if Config.plateauRichness then
-			return platval
-		else
-			return platval+Config.oreRichnessScalingFactor*unclamped_ore_scaling*(dd-maxd)
-		end
+	if dd >= maxd and Config.plateauRichness then
+		dd = maxd
 	end
 	--local ret = 0.2-20+40/(1+((2.71*Config.distanceScaling)^(-dist_factor*(dx*dx+dy*dy-dist_const))))
 	local ret = 0.25+getCosInterpolate(dd, maxd, platval)

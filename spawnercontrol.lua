@@ -38,7 +38,7 @@ function ensureNoGroupedSpawnersNearby(spawner, val)
 		search = 24
 	end
 	local nearspawners = spawner.surface.find_entities_filtered({area = {{x-search, y-search}, {x+search, y+search}}, type="unit-spawner"})
-	if getTableSize(nearspawners) > 1+allowedGrouping then -- +1 for the spawner itself
+	if getTableSize(nearspawners) > 1+allowedGrouping*Config.spawnerClustering then -- +1 for the spawner itself
 		return 0
 	end
 	return val
