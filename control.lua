@@ -2,6 +2,8 @@
 require "functions"
 require "config"
 
+require "__DragonIndustries__.strings"
+
 local ore_debug = false
 local spawner_debug = false
 
@@ -43,6 +45,35 @@ script.on_configuration_changed(function(data)
 		initChokepointModifiers(false)
 	end
 end)
+
+local function addCommands()
+	commands.add_command("reinitializeOreRichness", {"cmd.reinit-ore-help"}, function(event)
+		local player = game.players[event.player_index]
+		if player.admin then
+			if not event.parameter then
+				player.print("You must specify a range in tiles (and optionally an ore type filter)!")
+				return
+			end
+			local parts = splitString(event.parameter, "/")
+			local range = tonumber(parts[1])
+			if range then
+				local names = #parts >= 2 and splitString(parts[2], ",") or nil
+				local avg = 0
+				local box = {{game.player.position.x-range, game.player.position.y-range}, {game.player.position.x+range, game.player.position.y+range}}
+				local entities = player.surface.find_entities_filtered{type = "resource", area = box, name = names}
+				for _,e in pairs(entities) do
+					e.amount = getNetResourceAmount(e.name, e.surface, e.position.x, e.position.y, 0, 1)
+					avg = avg+e.amount
+				end
+				local n = getTableSize(entities)
+				avg = avg/n
+				game.print("Oreverhaul: Reinitialized " .. n .. " ore tiles in range " .. range .. " with an average richness of " .. avg .. " units.")
+			end
+		end
+	end)
+end
+
+addCommands()
 
 function controlChunk(surface, area, doOres, doSpawners)
 	initGlobal(false)

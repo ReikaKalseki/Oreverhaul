@@ -197,9 +197,6 @@ Config.nestHealthFactor = 10
 Config.retrogenOreDistance = -1
 Config.retrogenSpawnerDistance = -1--600
 
---Which ores to retrogen, if the ore retrogen is enabled. Make empty for "all".
-Config.retrogenOreSet = {"crude-oil"}
-
 --Should newly-built enemy bases have the distance (worm size, spawner type, etc) restrictions and distance scaling forcibly applied?
 --Helpful if you have a nice clear ore patch then get a spitter nest plopped on it four hours into the game.
 --No performance impact unless your biters are expanding more aggressively than AIs in a game of Civilization on the Deity difficulty (and if that is the case, you need a lot more than this to help you).

@@ -1,13 +1,17 @@
 require "constants"
 require "config"
 
+function getNetResourceAmount(orename, surface, dx, dy, dr, drm)
+	local f = 1-0.5*(dr/(drm*drm))
+	local baseamt = getOreAmount(orename, dx, dy)
+	local amt = math.floor(f*baseamt)
+	--log(dr .. " = " .. f .. " x " .. baseamt)
+	return amt
+end
+
 function createResource(orename, surface, chunk, dx, dy, dr, drm)
 	if isInChunk(dx, dy, chunk) and canPlaceOreAt(surface, orename, dx, dy) then
-		local f = 1-0.5*(dr/(drm*drm))
-		local baseamt = getOreAmount(orename, dx, dy)
-		local amt = math.floor(f*baseamt)
-		--log(dr .. " = " .. f .. " x " .. baseamt)
-		surface.create_entity{name = orename, position = {x = dx, y = dy}, force = game.forces.neutral, amount = amt}
+		surface.create_entity{name = orename, position = {x = dx, y = dy}, force = game.forces.neutral, amount = getNetResourceAmount(orename, surface, dx, dy, dr, drm)}
 	end
 end
 
