@@ -5,8 +5,8 @@ Config = {} --ignore this line; technical
 --Some values (such as ore plateau distance, some base chance values, etc) are defined in the "constants" file (in the same folder as this file);
 --You can edit those too, but they are undocumented and were never designed for modification, so do so at your own risk. There will be no guarantee of support for such modifications.
 
---Generally, the idea is to 1) encourage exploration, as it yields better ore richness, 2) force trains during progression, as belting uranium 5000 tiles is idiotic, and 3) cause player-biter conflict due to the minimum spawner
---generation distance (usually) being less than the minmum distance for many ores.
+--Generally, the idea is to 1) encourage exploration, as it yields better ore richness and types, 2) force trains during progression, as belting uranium 5000 tiles is idiotic, and 3) cause player-biter conflict due to the
+--minimum spawner generation distance (usually) being less than the minmum distance for many ores.
 
 --It is recommended that you test a set of options by generating, charting, and examining, to a large distance, at least 6 or so maps before committing to a playthrough with it.
 
@@ -42,10 +42,10 @@ Config.oreTierDistances = {
 }
 
 --Which ores fit in what tier. Anything not in this list is entirely ignored (deleted and not generated).
---Adding custom ores is entirely supported; use their internal names. Any specified ore that does not exist is ignored for generation but logged.
+--Adding custom ores is fully supported; use their internal entity names. Any specified ore that does not exist is ignored for generation but logged.
 --BobMod ores configured with input from Bobingabout, and so should be reasonably fitting for his progression.
---AngelOres not included by default since their processing (more advanced resources based on processing the same ore type) is fundamentally incompatible with a distance tiering system.
---Add them if desired, but there is little point in doing so.
+--AngelOres not included by default since their processing (more advanced resources based on more complex processing of the same input ore type) is fundamentally incompatible with a distance tiering system.
+--Add them if you need them to spawn, but there is little point in assigning tiers to them.
 Config.oreTiers = {
 	["coal"] = 0, --vanilla
 	["iron-ore"] = 0, --vanilla
@@ -70,7 +70,7 @@ Config.oreTiers = {
 	["uraninite"] = 5, --not really relevant anymore as of 0.15, unless UraniumPower still exists(?)
 	["fluorite"] = 5, --not really relevant anymore as of 0.15, unless UraniumPower still exists(?)
 	["uranium-ore"] = 5, --vanilla
-	["thorium-ore"] = 5, --vanilla
+	["thorium-ore"] = 5,
 }
 
 --Ores that MUST be present near the center. Numerical values are their relative weights (since not all are of equal need in the early game).
@@ -163,7 +163,7 @@ Config.flatRichnessFactor = 1.25
 --A flat-rate multiplier for ore patch chance per chunk. Higher means more ore patches (not recommended above base settings unless you have a world with little space for ore); lower means patches are rarer.
 --Be careful in an environment with many ores, lest you make hunting for a specific ore type painful.
 --Only meaningful if ore generation override is ENABLED.
-Config.orePatchChanceFactor = 0.3
+Config.orePatchChanceFactor = 0.5
 
 --Does the richness plateau at an internally calculated distance, or does it keep growing forever? Note that this can create ore patches with billions of ore if set to false.
 Config.plateauRichness = false
@@ -197,7 +197,7 @@ Config.nestHealthFactor = 10
 Config.retrogenOreDistance = -1
 Config.retrogenSpawnerDistance = -1--600
 
---Should newly-built enemy bases have the distance (worm size, spawner type, etc) restrictions and distance scaling forcibly applied?
+--Should newly-built enemy bases (ie biter "expansion") have the distance (worm size, spawner type, etc) restrictions and distance scaling forcibly applied?
 --Helpful if you have a nice clear ore patch then get a spitter nest plopped on it four hours into the game.
 --No performance impact unless your biters are expanding more aggressively than AIs in a game of Civilization on the Deity difficulty (and if that is the case, you need a lot more than this to help you).
 --Does not affect already-built bases, and tapers off as the evolution factor rises (100% effect at evo 0, 0% at evo 1)
