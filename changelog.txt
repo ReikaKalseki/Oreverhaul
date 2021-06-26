@@ -37,7 +37,7 @@ Version: 1.17.24
 Date: Sep 30 2019
 	- Changed generation override defaults back to enabled
 ---------------------------------------------------------------------------------------------------
-Version: 1.17.13
+Version: 1.17.12
 Date: Jun 17 2019
 	- Reduced richness scaling sixfold
 ---------------------------------------------------------------------------------------------------
@@ -69,7 +69,8 @@ Date: Jan 30 2018
 	- Added options to increase ore yield per tile based on tech cost and expensive recipe setting
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.64
-Date: Dec 3 2017
+Game: 0.16
+Date: Dec 23 2017
 	- Update to 0.16
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.36
@@ -77,20 +78,23 @@ Date: Aug 23 2017
 	- More numerical tweaks
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.24
-Date: Aug 17 2017
+Game: 0.15
+Date: Aug 18 2017
 	- Added weighting system to starter ores table
 	- Tweaked some generation values
 	- Added RSO detection and warning
 	- Evo factor now reduces the effect of the built bases option
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.8
-Date: Aug 10 2017
+Game: 0.15
+Date: Aug 11 2017
 	- Reorganized and cleaned up config, including adding new explanations
 	- Added "Enforce Spawner Tiering For Built Bases" setting
 	- Added independent patch size distance scaling factor
 	- Added "anti-bias" feature
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.5
+Game: 0.15
 Date: Aug 8 2017
 	- Fixed MP problems caused by CRC failures in script
 	- Added "per ore richness" setting
