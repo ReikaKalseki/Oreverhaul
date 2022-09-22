@@ -225,5 +225,5 @@ function createSpillingOrePatches(surface, chunk, x, y)
 end
 
 function canPlaceOreAt(surface, ore, x, y)
-	return surface.can_place_entity{name = ore, position = {x, y}} and not isWaterEdge(surface, x, y)
+	return surface.can_place_entity{name = ore, position = {x, y}, force = game.forces.neutral, build_check_type=defines.build_check_type.blueprint_ghost, forced=true}--[[#surface.find_entities_filtered{type = "resource", area = {{x,y}, {x+0.45,y+0.45}}} == 0--]] and not isWaterEdge(surface, x, y)
 end

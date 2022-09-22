@@ -336,16 +336,16 @@ function printDebug(area, totals, newtotals, mults, counts)
 end
 
 function isWaterEdge(surface, x, y)
-	if surface.get_tile{x-1, y}.valid and surface.get_tile{x-1, y}.prototype.layer == "water-tile" then
+	if surface.get_tile{x-1, y}.valid and surface.get_tile{x-1, y}.prototype.collision_mask["water-tile"] then
 		return true
 	end
-	if surface.get_tile{x+1, y}.valid and surface.get_tile{x+1, y}.prototype.layer == "water-tile" then
+	if surface.get_tile{x+1, y}.valid and surface.get_tile{x+1, y}.prototype.collision_mask["water-tile"] then
 		return true
 	end
-	if surface.get_tile{x, y-1}.valid and surface.get_tile{x, y-1}.prototype.layer == "water-tile" then
+	if surface.get_tile{x, y-1}.valid and surface.get_tile{x, y-1}.prototype.collision_mask["water-tile"] then
 		return true
 	end
-	if surface.get_tile{x, y+1}.valid and surface.get_tile{x, y+1}.prototype.layer == "water-tile" then
+	if surface.get_tile{x, y+1}.valid and surface.get_tile{x, y+1}.prototype.collision_mask["water-tile"] then
 		return true
 	end
 end
