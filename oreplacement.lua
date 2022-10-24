@@ -1,6 +1,8 @@
 require "constants"
 require "config"
 
+require "__DragonIndustries__.tiles"
+
 function getNetResourceAmount(orename, surface, dx, dy, dr, drm)
 	local f = 1-0.5*(dr/(drm*drm))
 	local baseamt = getOreAmount(orename, dx, dy)

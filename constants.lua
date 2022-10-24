@@ -8,7 +8,7 @@ unclamped_ore_scaling = 0.06 --if plateauing is disabled
 core_distance = 135 --the distance defining the "start area" to force all necessary starting ores and prevent any spawners
 base_ore_patch_chance = 0.4--0.25--0.25--0.125--0.5--0.125
 final_ore_patch_chance = 0.25--0.675--0.5--0.75--0.5
-center_patch_chance = 1.0--0.55--1.5--1.625--1.5
+center_patch_chance = 0.75--0.55--1.5--1.625--1.5
 
 center_richness_factor = 1
 

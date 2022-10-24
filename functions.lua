@@ -6,6 +6,7 @@ require "constants"
 
 require "__DragonIndustries__.mathhelper"
 require "__DragonIndustries__.arrays"
+
 --[[
 function cacheChunkOre(chunkloc, ore, amount, x, y)
 	if chunkCache[chunkloc.keystring] == nil then
@@ -332,20 +333,5 @@ function printDebug(area, totals, newtotals, mults, counts)
 		local avg = string.format("%.0f", totals[ore]/counts[ore])
 		local newavg = string.format("%.0f", newtotals[ore]/counts[ore])
 		game.player.print(area .. ": Generated " .. counts[ore] .. " tiles of " .. ore .. ", total value from " .. totals[ore] .. " to " .. newtotals[ore] .. " (avg=" .. avg .. "/" .. newavg .. "), avg mult=" .. avgmult)
-	end
-end
-
-function isWaterEdge(surface, x, y)
-	if surface.get_tile{x-1, y}.valid and surface.get_tile{x-1, y}.prototype.collision_mask["water-tile"] then
-		return true
-	end
-	if surface.get_tile{x+1, y}.valid and surface.get_tile{x+1, y}.prototype.collision_mask["water-tile"] then
-		return true
-	end
-	if surface.get_tile{x, y-1}.valid and surface.get_tile{x, y-1}.prototype.collision_mask["water-tile"] then
-		return true
-	end
-	if surface.get_tile{x, y+1}.valid and surface.get_tile{x, y+1}.prototype.collision_mask["water-tile"] then
-		return true
 	end
 end
