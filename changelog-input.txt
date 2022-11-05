@@ -1,4 +1,13 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.148.1
+Date: Oct 31 2022
+	- Reduced the effect of the previous ore rate changes
+---------------------------------------------------------------------------------------------------
+Version: 1.144.1
+Date: Oct 7 2022
+	- Adjusted ore rates again
+	- Fixed placement of ore being stopped by trees, causing "holey" ore fields
+---------------------------------------------------------------------------------------------------
 Version: 1.105.1
 Date: Apr 28 2021
 	- Changed some ore parameters again
