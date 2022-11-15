@@ -42,7 +42,7 @@ end)
 script.on_configuration_changed(function(data)
 	initGlobal(false)
 	if not game.is_multiplayer() and data.mod_changes.ChokePoint and data.mod_changes.ChokePoint.old_version == nil then --just added ChokePoint, AND SP, call init() once more
-		initChokepointModifiers(false)
+		initChokepointModifiers()
 	end
 end)
 

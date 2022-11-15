@@ -268,34 +268,6 @@ function createSeed(surface, x, y, mixin) --Used by Minecraft MapGen
 	setRandSeed(seed)
 end
 
-function getValidOresAt(dx, dy, dd)
-	local ores = {}
-	for ore,dist in pairs(ORE_DIST) do
-		if dist <= dd then
-			ores[ore] = (dd-dist)*(dd-dist)
-		end
-	end
-	return ores
-end
-
-function getReplacedOre(ore)
-	local x = ore.position.x
-	local y = ore.position.y
-	--[[
-	local ore_count = {}
-	local ores = event.surface.find_entities_filtered({area = {{x-1, y-1}, {x+1, y+1}}, type="resource"})
-	for num,ore in pairs(ores) do
-		if ore_count[ore.name] == nil then
-			ore_count[ore.name] = 0
-		end
-		ore_count[ore.name] = ore_count[ore.name]+1
-	end
-	return orenames[getWeightedRandom(ore_count)]
-	-]]
-	valid = getValidOresAt(math.abs(x), math.abs(y), math.sqrt(x*x+y*y))
-	return getCustomWeightedRandom(valid, nextRangedInt)
-end
-
 function getOreSpecificBias(dd, ore)
 	if ore == "stone" then
 		return math.min(1.8, math.max(1.2, dd/5000))
